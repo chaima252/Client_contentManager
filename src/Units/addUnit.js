@@ -1,58 +1,27 @@
 import React from 'react'
+import './style.css'
+import { Select,Button } from 'antd' 
 
 function AddUnit() {
   return (
     <div class="content" style={{justifyContent:'center', display:'Flex',alignItems:'center',marginTop:'60px'}} >
-    <div class="form" 
-    style={{backgroundColor: '#15172b' , borderRadius: '20px',
-         boxSizing: 'border-box',
-         height: '500px',padding: '20px' ,width: '320px' 
-    }}>
-    <div class="title" style={{  color: '#eee' ,
-        fontFamily: 'sans-serif',
-        fontSize: '36px',
-       fontWeight: '600',
-        marginTop: '30px'
-    }}>Welcome</div>
-    <div class="subtitle" 
-    style={{  color: '#eee' ,
-    fontFamily: 'sans-serif',
-    fontSize: '16px',
-   fontWeight: '600',
-    marginTop: '10px'
-}}
->Let's add your unit!</div>
-    <div class="input-container ic1" style={{ height: '50px',
-  position: 'relative',
-  width: '100%'}}>
-      <input id="unitname" class="input" type="text" placeholder=" "
-      style={{ backgroundColor: '#303245',
-        borderRadius: '12px',
-        border: 0,
-        boxSizing: 'border-box',
-        color: '#eee',
-        fontSize: '18px',
-        height: '100%',
-        outline: 0,
-        padding: '4px 20px 0',
-        width: '100%'}} />
-      <div class="cut"></div>
-      <label for="firstname" class="placeholder" style={{
-        color: '#65657b',
-        fontFamily: 'sans-serif',
-        left: '20px',
-        lineHeight: '14px',
-        pointerEvents: 'none',
-        position: 'absolute',
-        transformOrigin: '0 50%',
-        transition: 'transform 200ms, color 200ms',
-        top: '20px',
-      }}>First name</label>
-    </div>
-   
-   
-    <button type="text" class="submit">submit</button>
+   <div className="form">
+      <div className="title">Welcome</div>
+      <div className="subtitle">Let's create your Unit!</div>
+
+      <div className="input-container ic1">
+        <input id="firstname" className="input" type="text" placeholder=" " />
+        <div className="lab"></div>
+        <label for="firstname" className="placeholder">Unit Name</label>
+      </div>
+
+     
+      <div className="input-container ic2">
+      <Select  defaultValue="Course" className="select" options={[{ value: 'Java', label: <span>Java</span> },{ value: 'Python', label: <span>Python</span> }]} />
   </div>
+      
+      <button type="text" className="submit">Add</button>
+    </div>
   </div>
   )
 }
