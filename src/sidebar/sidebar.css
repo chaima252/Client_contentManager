@@ -1,0 +1,146 @@
+.sidebar-menu {
+  position: fixed;
+  width: 250px;
+  height: 100%;
+  background-color: #1f1246;
+  border-left: 10px solid #1f1246;
+  transition: 0.5s;
+  overflow: hidden;
+  border-radius: 0 10px 0px 0px;
+  box-shadow: 5px 15px 6px #e3e3e3, -5px -5px 6px #f4f4f4;
+}
+
+.sidebar-menu .side-logo {
+  position: relative;
+  margin-top: 15%;
+  margin-left: 20%;
+}
+
+.sidebar-menu .side-logo h3 {
+  margin-left: 22%;
+  font-family: "Poppins", sans-serif;
+  margin-top: 2%;
+  color: white;
+}
+
+.sidebar-menu ul {
+  position: absolute;
+  top: 21%; /* move the all ul to the top or down */
+  left: -5%;
+  width: 100%;
+}
+
+.sidebar-menu ul li {
+  position: relative;
+  width: 100%;
+  list-style: none;
+  border-bottom-left-radius: 30px;
+  border-top-left-radius: 30px;
+  transition: all 300ms ease;
+}
+
+.sidebar-menu ul li:hover {
+  margin-left: 0.5rem;
+}
+
+i {
+  color: #e3e3e3;
+}
+
+.sidebar-menu ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: whitesmoke;
+  font-family: "Poppins", sans-serif;
+  font-size: 15.1px;
+}
+
+.sidebar-menu ul li a i {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.sidebar-menu ul li a span {
+  position: relative;
+  display: block;
+  padding: 0 20px;
+  height: 60px;
+  line-height: 60px;
+  text-align: start;
+  white-space: nowrap;
+}
+
+.selected {
+  background-color: white;
+  color: #6749f7;
+}
+
+.selected span,
+.selected i {
+  color: #6749f7;
+}
+
+/* selected item  */
+.selected a::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px 35px 0 10px #ffffff;
+  pointer-events: none;
+}
+
+.selected a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px -35px 0 10px #fafafa;
+  pointer-events: none;
+}
+
+/* .selected  span, .selected i{
+            background-color: white;
+            color: #6749f7;
+        } */
+/**********************************************************/
+/* ! here the container and main should be in all pages */
+
+/* ? container is the whole page */
+
+.container {
+  position: fixed;
+  width: 100%;
+  /* overflow:scroll; */
+  background: rgb(255, 255, 255);
+}
+
+/* ?  main is section besides the side Bar */
+
+.main {
+  font-family: "Poppins", sans-serif;
+  position: absolute;
+  width: calc(100% - 300px);
+  left: 300px;
+  min-height: 100vh;
+  background: transparent;
+  transition: 0.5s;
+  align-items: center;
+  justify-content: center;
+}
