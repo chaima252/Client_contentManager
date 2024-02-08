@@ -1,7 +1,8 @@
 
 
 .form {
-    background-color: #15172b;
+    background-color: #1f1246;;
+   
     border-radius: 20px;
     box-sizing: border-box;
     height: 600px;
@@ -37,7 +38,7 @@
     margin-top: 30px;
   }
   .input {
-    background-color: #303245;
+    background-color: #fcfcfc;;
     border-radius: 12px;
     border: 0;
     box-sizing: border-box;
@@ -84,7 +85,7 @@
   
 
   .lab {
-    background-color: #15172b;
+    background-color: #1f1246;;
     border-radius: 10px;
     height: 20px;
     left: 20px;
@@ -123,3 +124,10 @@
   .submit:active {
     background-color: #8e79ec;
   }
+
+  .rows {
+    background-color: #8e79ec;
+  }
+
+
+ 
