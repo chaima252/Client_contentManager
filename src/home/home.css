@@ -12,7 +12,7 @@
   padding: 20px;
   color: white;
   background: linear-gradient(#1f1246, #1f1246) padding-box,
-    linear-gradient(145deg, transparent 100vh, #7659f1, #35e9bc) border-box;
+    linear-gradient(145deg, transparent 2vh, #7659f1, #35e9bc) border-box;
   border: 5px solid transparent;
   border-radius: 20px;
   display: flex;

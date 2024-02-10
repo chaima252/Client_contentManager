@@ -125,9 +125,8 @@ i {
 /* ? container is the whole page */
 
 .container {
-  position: fixed;
+  /* position: fixed; */
   width: 100%;
-  /* overflow:scroll; */
   background: rgb(255, 255, 255);
 }
 
@@ -138,7 +137,7 @@ i {
   position: absolute;
   width: calc(100% - 300px);
   left: 300px;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   background: transparent;
   transition: 0.5s;
   align-items: center;
