@@ -19,7 +19,7 @@ function Sidebar() {
             <Link to={'/'}><i><HomeIcon style={{width:"60px"}}/></i><span>Dashboard</span></Link>
         </li>
         <li>
-            <Link to={'/'}><i><AutoStoriesIcon style={{width:"60px"}}/></i><span>Courses</span></Link>
+            <Link to={'/courses'}><i><AutoStoriesIcon style={{width:"60px"}}/></i><span>Courses</span></Link>
 
         </li>
         <li>

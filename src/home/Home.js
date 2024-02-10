@@ -16,9 +16,9 @@ function Home() {
 
           <div className='last-courses-container'>
             <p>Last courses </p>
-            <div class="card">
-              <div class="card-content">
-                <p class="heading">Java</p>
+            <div className="card">
+              <div className="card-content">
+                <p className="heading">Java</p>
               </div>
             </div>
           </div>
