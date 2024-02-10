@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect,useState} from 'react'
 
 
 import Sidebar from '../sidebar/Sidebar' 
@@ -14,6 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Delete } from '@mui/icons-material';
+import axios from 'axios';
 import IconButton from '@mui/material/IconButton';
 
 
@@ -45,6 +46,28 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
  function ManageUnits() {
 
+  const [dataUnits,setDataUnits]=useState([]) ;
+  const [isLoading, setIsLoading] = useState(true); 
+
+  useEffect(()=> {
+
+    const fetchData= async () => {
+      try {
+        const response = await axios.get('http://localhost:5002/get_units'); 
+        setDataUnits(response.data);
+        console.log("Data units ",response.data)
+      } catch (error) {
+       console.log("ERROR ",error)
+      } 
+      finally {
+        setIsLoading(false);
+      }
+    } ;
+
+    fetchData() ;
+  },[])
+
+
    
   return (
     
@@ -52,7 +75,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         <Sidebar/>
         <div className="main">
         <h1
-            style={{ textAlign: "Left", fontSize: "40px", marginTop: "35px",color:'#1f1246' }}
+           style={{ textAlign: "Left", fontSize: "40px", marginTop: "35px",color:'#1f1246' }}
           >
             Manage Units
           </h1>
@@ -91,57 +114,26 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         </TableHead>
         <TableBody>
           
-          <TableRow>
-              <StyledTableCell   component="th" scope="row">1
-              </StyledTableCell>
-              <StyledTableCell >Java Fundamentals</StyledTableCell>
-              <StyledTableCell >Java Course</StyledTableCell>
-              <StyledTableCell >1</StyledTableCell>
-             <StyledTableCell style={{display:"flex"}}>
-             <IconButton aria-label="delete" color="error">
-            <Delete />
-          </IconButton>
-          <IconButton aria-label="edit" color="secondary">
-            <EditIcon />
-          </IconButton>
-             
-             </StyledTableCell>
-              </TableRow>
-              <TableRow>
-              <StyledTableCell   component="th" scope="row">2
-              </StyledTableCell>
-              <StyledTableCell >Java Fundamentals</StyledTableCell>
-              <StyledTableCell >Java Course</StyledTableCell>
-              <StyledTableCell >1</StyledTableCell>
-              <StyledTableCell style={{display:"flex"}}>
-             <IconButton aria-label="delete" color="error">
-            <Delete />
-          </IconButton>
-          <IconButton aria-label="edit" color="secondary">
-            <EditIcon />
-          </IconButton>
-             
-             </StyledTableCell>
-
-              </TableRow>
-              <TableRow>
-              <StyledTableCell   component="th" scope="row">3
-              </StyledTableCell>
-              <StyledTableCell >Java Fundamentals</StyledTableCell>
-              <StyledTableCell >Java Course</StyledTableCell>
-              <StyledTableCell >1</StyledTableCell>
-              <StyledTableCell style={{display:"flex"}}>
-             <IconButton aria-label="delete" color="error">
-            <Delete />
-          </IconButton>
-          <IconButton aria-label="edit" color="secondary">
-            <EditIcon />
-          </IconButton>
-             
-             </StyledTableCell>
-              </TableRow>
-
-             
+          { dataUnits.map((unit)=> (
+            <TableRow>
+            <StyledTableCell   component="th" scope="row">{unit.idUnit}</StyledTableCell>
+            <StyledTableCell style={{fontWeight:'bold'}}>{unit.unitTitle}</StyledTableCell>
+            <StyledTableCell  style={{fontWeight:'bold'}} >{unit.courseTitle}</StyledTableCell>
+            <StyledTableCell >{unit.idCourse}</StyledTableCell>
+           <StyledTableCell style={{display:"flex"}}>
+           <IconButton aria-label="delete" color="error">
+          <Delete />
+        </IconButton>
+        <IconButton aria-label="edit" color="secondary">
+          <EditIcon />
+        </IconButton>
+           
+           </StyledTableCell>
+           </TableRow>
+          )) }
+          
+              
+           
               
              
            
