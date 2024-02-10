@@ -1,6 +1,6 @@
 import React , {useState,useEffect} from 'react'
 import './style.css'
-import { Select } from 'antd' 
+import { Select} from 'antd' 
 import { Link , useNavigate} from 'react-router-dom';
 
 import Sidebar from "../sidebar/Sidebar";
@@ -9,6 +9,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Alert,message } from 'antd';
 import axios from 'axios';
 
+const { Option } = Select; 
 
 function AddUnit() {
   const navigate = useNavigate();
@@ -150,17 +151,19 @@ useEffect(() => {
 
       
         <div className="input-container ic2">
-        {dataCourses.map((item) => (
-         <Select
-         key={item._id} 
-         id="courseName"
-         defaultValue="Course"
-         value={courseName} 
-         onChange={handleCourseChange}
-         className="select"
-         options={[{ value: item._id, label: <span> {item.title}</span> }]}
-       />
-        ) ) }
+        <Select
+      id="courseName"
+      defaultValue="Course"
+      value={courseName}
+      onChange={handleCourseChange}
+      className="select"
+    >
+      {dataCourses.map((item) => (
+        <Option key={item._id} value={item._id}>
+          {item.title}
+        </Option>
+      ))}
+    </Select>
    
     </div>
        <br></br>

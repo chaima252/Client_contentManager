@@ -1,6 +1,6 @@
 import React, {useEffect,useState} from 'react'
 
-
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '../sidebar/Sidebar' 
 import { Button } from '@mui/material';
 import { Add} from '@mui/icons-material';
@@ -14,11 +14,19 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Delete } from '@mui/icons-material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
 import axios from 'axios';
 import IconButton from '@mui/material/IconButton';
 
 
 import './style.css'
+import Item from 'antd/es/list/Item';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -45,8 +53,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
  function ManageUnits() {
-
+  const navigate = useNavigate();
   const [dataUnits,setDataUnits]=useState([]) ;
+  const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(()=> {
@@ -67,7 +76,33 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     fetchData() ;
   },[])
 
+const deleteUnit = async (id) => {
+  
+  try {
+    const response = await axios.delete(`http://localhost:5002/delete_unit/${id}`); 
+    
+    console.log("Unit deleted succesfuly ",response.data)
+  
+  } catch (error) {
+   console.log("ERROR ",error)
+  } 
+  
+}
 
+const handleClickOpen = () => {
+  setOpen(true);
+};
+
+const handleClose = () => {
+  setOpen(false);
+};
+const handleCloseAgree = (id) => {
+ 
+ 
+  setOpen(false);
+  deleteUnit(id) ; 
+  navigate('/manageUnits')
+};
    
   return (
     
@@ -107,7 +142,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
             <StyledTableCell >ID Unit</StyledTableCell>
             <StyledTableCell >Unit Name</StyledTableCell>
             <StyledTableCell >Course </StyledTableCell>
-            <StyledTableCell  >Course ID</StyledTableCell>
+            <StyledTableCell  >Lessons</StyledTableCell>
             <StyledTableCell  >Action</StyledTableCell>
             
           </TableRow>
@@ -119,9 +154,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
             <StyledTableCell   component="th" scope="row">{unit.idUnit}</StyledTableCell>
             <StyledTableCell style={{fontWeight:'bold'}}>{unit.unitTitle}</StyledTableCell>
             <StyledTableCell  style={{fontWeight:'bold'}} >{unit.courseTitle}</StyledTableCell>
-            <StyledTableCell >{unit.idCourse}</StyledTableCell>
+            <StyledTableCell >{unit.nbLessons}</StyledTableCell>
            <StyledTableCell style={{display:"flex"}}>
-           <IconButton aria-label="delete" color="error">
+           <IconButton aria-label="delete" color="error"  onClick={handleClickOpen} >
           <Delete />
         </IconButton>
         <IconButton aria-label="edit" color="secondary">
@@ -129,7 +164,24 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         </IconButton>
            
            </StyledTableCell>
+           <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle style={{fontWeight:'bold' , color: '#1f1246'}} >Are you sure to delete {unit.unitTitle} ?</DialogTitle>
+        <DialogContent>
+          <DialogContentText style={{ color: '#1f1246'}} id="alert-dialog-slide-description">
+          This unit for  <span style={{fontWeight:'bold',color:'#35E9BC'}}> {unit.courseTitle} </span> course contains <span style={{fontWeight:'bold',color:'#35E9BC'}}>  {unit.nbLessons} lessons </span>. want you to delete it?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} style={{color:'#7659F1'}}>Disagree</Button>
+          <Button onClick={()=> handleCloseAgree(unit.idUnit)} style={{color:'#7659F1'}}>Agree</Button>
+        </DialogActions>
+      </Dialog>
            </TableRow>
+          
           )) }
           
               
