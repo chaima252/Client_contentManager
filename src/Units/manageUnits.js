@@ -14,20 +14,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Delete } from '@mui/icons-material';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
-import { TransitionProps } from '@mui/material/transitions';
+import {  Modal} from 'antd';
+import { Select} from 'antd' 
 import axios from 'axios';
 import IconButton from '@mui/material/IconButton';
 
 
 import './style.css'
-import Item from 'antd/es/list/Item';
 
+
+const { Option } = Select; 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -55,16 +51,21 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
  function ManageUnits() {
   const navigate = useNavigate();
   const [dataUnits,setDataUnits]=useState([]) ;
-  const [open, setOpen] = React.useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true); 
+  const [dataCourses, setDataCourses] = useState([]);
+  const [unitUpdatedName, setUnitUpdatedName] = useState('');
+  const [courseUnitUP, setCourseUnitUP] = useState('');
 
   useEffect(()=> {
 
     const fetchData= async () => {
       try {
         const response = await axios.get('http://localhost:5002/get_units'); 
+        const responseCourses = await axios.get('http://localhost:5002/get_all_courses'); 
+        setDataCourses(responseCourses.data);
         setDataUnits(response.data);
-        console.log("Data units ",response.data)
+        console.log("Data courses ",responseCourses.data)
       } catch (error) {
        console.log("ERROR ",error)
       } 
@@ -77,32 +78,62 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },[])
 
 const deleteUnit = async (id) => {
+
+  Modal.confirm({
+    title:'Delete Unit',
+    content:'Are you sure you want to delete this Unit?',
+    onOk(){
+      axios.delete(`http://localhost:5002/delete_unit/${id}`)
+      .then(() => {
+        window.location.reload(false);
+
+      })
+    },
+    okText:'Delete',
+    cancelText:'Cancel',
+    okButtonProps:{
+      style: {backgroundColor: '#C10000'}
+    }      
+
+  })
   
-  try {
-    const response = await axios.delete(`http://localhost:5002/delete_unit/${id}`); 
-    
-    console.log("Unit deleted succesfuly ",response.data)
-  
-  } catch (error) {
-   console.log("ERROR ",error)
-  } 
+ 
   
 }
 
-const handleClickOpen = () => {
-  setOpen(true);
-};
+const handleUnitUpdatedName = (event)=> {
+setUnitUpdatedName(event.target.value) ;
+}
 
-const handleClose = () => {
-  setOpen(false);
-};
-const handleCloseAgree = (id) => {
+const handleCourseUpdated = (value)=> {
  
- 
-  setOpen(false);
-  deleteUnit(id) ; 
-  navigate('/manageUnits')
-};
+  setCourseUnitUP(value) ;
+
+}
+
+const updateUnit = async (unit) => { 
+
+  const unitUpdated = {
+    idCourse: courseUnitUP,
+    title : unitUpdatedName,
+    
+  }
+  console.log("unit updated", unitUpdated)
+
+  try {
+    const response = await axios.put(`http://localhost:5002/update_unit/${unit.idUnit}`,unitUpdated); 
+    console.log("Response ",response)
+    window.location.reload(true);
+  } catch (error) {
+   console.log("ERROR ",error)
+  } 
+  setModalOpen(false)
+
+}
+
+
+
+
    
   return (
     
@@ -156,33 +187,55 @@ const handleCloseAgree = (id) => {
             <StyledTableCell  style={{fontWeight:'bold'}} >{unit.courseTitle}</StyledTableCell>
             <StyledTableCell >{unit.nbLessons}</StyledTableCell>
            <StyledTableCell style={{display:"flex"}}>
-           <IconButton aria-label="delete" color="error"  onClick={handleClickOpen} >
+           <IconButton aria-label="delete" color="error"  onClick={()=> deleteUnit(unit.idUnit)} >
           <Delete />
         </IconButton>
-        <IconButton aria-label="edit" color="secondary">
+        <IconButton aria-label="edit" color="secondary" onClick={() => setModalOpen(true)} >
           <EditIcon />
         </IconButton>
            
            </StyledTableCell>
-           <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
+          
+           <Modal
+        title="Update Unit"
+        centered
+        
+        open={modalOpen}
+        onOk={() => updateUnit(unit)}
+        onCancel={() => setModalOpen(false)}
       >
-        <DialogTitle style={{fontWeight:'bold' , color: '#1f1246'}} >Are you sure to delete {unit.unitTitle} ?</DialogTitle>
-        <DialogContent>
-          <DialogContentText style={{ color: '#1f1246'}} id="alert-dialog-slide-description">
-          This unit for  <span style={{fontWeight:'bold',color:'#35E9BC'}}> {unit.courseTitle} </span> course contains <span style={{fontWeight:'bold',color:'#35E9BC'}}>  {unit.nbLessons} lessons </span>. want you to delete it?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} style={{color:'#7659F1'}}>Disagree</Button>
-          <Button onClick={()=> handleCloseAgree(unit.idUnit)} style={{color:'#7659F1'}}>Agree</Button>
-        </DialogActions>
-      </Dialog>
+        <div style={{marginTop:'15px'}}>
+        <input id="unitName" className="input" 
+          type="text" placeholder="Unit name "
+        defaultValue={unit.unitTitle}
+       
+        onChange={handleUnitUpdatedName}
+          style={{height:'40px'}}
+          />
+          <br/>
+          <br/>
+         <Select
+      id="courseName"
+      defaultValue={unit.courseTitle}
+    value={courseUnitUP}
+     onChange={handleCourseUpdated}
+      className="select"
+    >
+       { dataCourses.map((course)=> (
+      <Option value= {course._id} > {course.title} </Option>
+     
+       ) ) } 
+      </Select>
+  
+      </div>
+      </Modal>
            </TableRow>
+
+           
           
           )) }
+
+
           
               
            
