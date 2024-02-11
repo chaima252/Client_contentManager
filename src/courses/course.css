@@ -59,3 +59,10 @@
   color: #1f1246;
   cursor: none;
 }
+
+.buttons-card {
+  margin-top: 35px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
