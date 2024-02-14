@@ -5,6 +5,7 @@
   flex-direction: column;
   text-align: center;
   margin-top: 60px;
+  font-family: monospace;
 }
 
 .form-add-corse-area {
@@ -23,7 +24,8 @@
 .form-add-corse-area h1 {
   color: white;
   font-weight: 900;
-  font-size: 1.5em;
+  font-size: 2em;
+  /* font-family: monospace */
 }
 
 .sub_title {
@@ -48,6 +50,7 @@
   padding: 12px 10px;
   border-radius: 4px;
   font-size: 16px;
+  font-family: monospace;
 }
 
 .form_style:focus,
@@ -68,6 +71,7 @@
   outline: 0;
   border: none;
   color: white;
+  font-family: monospace;
 }
 
 .course-submit:hover {
