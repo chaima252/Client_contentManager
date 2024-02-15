@@ -1,9 +1,16 @@
+.dash-title h2 {
+  margin-top: 30px;
+  font-size: 25px;
+}
 .last-courses-container p {
   font-size: 25px;
   font-weight: bold;
 }
 .last-courses-container {
   margin-top: 45px;
+  display: flex;
+  flex-direction: row;
+  gap: 35px;
 }
 
 .card {

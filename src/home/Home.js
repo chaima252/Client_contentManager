@@ -13,13 +13,25 @@ function Home() {
           >
             Dashboard
           </h1>
-          <p>Welcome 👋</p>
+          <p>Welcome Content Manager👋</p>
 
+          <div className='dash-title'>
+            <h2>Last courses </h2>
+          </div>
           <div className='last-courses-container'>
-            <p>Last courses </p>
-            <div className="card">
-              <div className="card-content">
-                <p className="heading">Java</p>
+            <div className='card'>
+              <div className='card-content'>
+                <p className='heading'>Java</p>
+              </div>
+            </div>{" "}
+            <div className='card'>
+              <div className='card-content'>
+                <p className='heading'>Python</p>
+              </div>
+            </div>{" "}
+            <div className='card'>
+              <div className='card-content'>
+                <p className='heading'>C++</p>
               </div>
             </div>
           </div>

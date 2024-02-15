@@ -217,7 +217,6 @@ const updateUnit = async (unit) => {
          <Select
       id="courseName"
       defaultValue={unit.courseTitle}
-    value={courseUnitUP}
      onChange={handleCourseUpdated}
       className="select"
     >
