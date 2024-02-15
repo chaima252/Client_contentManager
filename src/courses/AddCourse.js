@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "../sidebar/Sidebar";
 import "./addcourse.css";
+import { useNavigate } from 'react-router-dom';
 
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -22,6 +23,7 @@ function AddCourse() {
     },
   });
 
+  const navigate = useNavigate();
   // notification success
   const notify = () => {
     toast.success(
@@ -51,6 +53,9 @@ function AddCourse() {
       .then((result) => {
         console.log(result);
         notify();
+        setTimeout(() => {
+          navigate('/courses');
+        }, 1500);
       })
       .catch((error) => {
         console.log(error.response.data);

@@ -224,7 +224,6 @@ const updateUnit = async (unit) => {
       id="courseName"
       style={{height:'40px'}}
       defaultValue={unit.courseTitle}
-    value={courseUnitUP}
      onChange={handleCourseUpdated}
       className="select"
     >
