@@ -198,10 +198,16 @@ const updateUnit = async (unit) => {
           
            <Modal
         title="Update Unit"
+        titleColor ="#1f1246"
         centered
-        
+        okButtonProps={{
+          style: {
+            backgroundColor: '#7659F1',
+            // Add other styles as needed
+          }
+        }}
         open={modalOpen}
-        onOk={() => updateUnit(unit)}
+        onOk={ () => updateUnit(unit)}
         onCancel={() => setModalOpen(false)}
       >
         <div style={{marginTop:'15px'}}>
@@ -216,6 +222,7 @@ const updateUnit = async (unit) => {
           <br/>
          <Select
       id="courseName"
+      style={{height:'40px'}}
       defaultValue={unit.courseTitle}
     value={courseUnitUP}
      onChange={handleCourseUpdated}
