@@ -1,7 +1,8 @@
 import React , {useState,useEffect} from 'react'
 import './style.css'
 import { Select} from 'antd' 
-import { Link , useNavigate} from 'react-router-dom';
+import { Link , useNavigate,useLocation} from 'react-router-dom';
+
 
 import Sidebar from "../sidebar/Sidebar";
 import Fab from '@mui/material/Fab';
@@ -13,6 +14,9 @@ const { Option } = Select;
 
 function AddUnit() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const idCourse = location.state.idCourse;
+  const courseTitle= location.state?.courseTitle ;
   const [unitName, setUnitName] = useState('');
   const [dataCourses, setDataCourses] = useState([]);
   const [errors, setErrors] = useState({});
@@ -45,12 +49,7 @@ useEffect(() => {
     setUnitName(event.target.value);
   };
 
-  const handleCourseChange = (value) => {
-  console.log("value",value)
-    
-      setCourseName(value);
-    
-  };
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -63,10 +62,6 @@ useEffect(() => {
       newErrors.unitName = 'Unit name is required.';
     }
 
-    if (courseName === 'Course') {
-      hasErrors = true;
-      newErrors.courseName = 'Please select a course.';
-    }
 
     setErrors(newErrors);
     setSubmitted(true);
@@ -75,9 +70,11 @@ useEffect(() => {
       // Form submission logic here (e.g., send data to server)
 
       const Unit = {
-        idCourse: courseName,
+        idCourse: idCourse,
         title: unitName,
       };
+
+      console.log("unit to add",Unit)
       
       try {
         const response = await axios.post('http://localhost:5002/add_unit', Unit); // Replace with your endpoint
@@ -92,7 +89,7 @@ useEffect(() => {
           },
           content: 'Unit added successfully !',
           duration: 1,
-         onClose :  ()=>  navigate('/manageUnits')
+         onClose :  ()=>  navigate('/unitsByCourse', {state: { idCourse: idCourse}})
         });
 
          
@@ -119,14 +116,7 @@ useEffect(() => {
       <div className="container">
         <Sidebar/>
         <div className="main">
-        <Link to="/manageUnits" style={{textDecoration: 'none'}}>
-        <Fab variant="extended" style={{display:'Flex',marginTop:'10px', marginRight:'50px',backgroundColor:'#7659F1',color:'#e3e3e3'}}>
-        <ArrowBackIcon sx={{ mr: 1 }} />
-        Return
-      </Fab>
-      </Link>
-
-        <div className="form-container" style={{justifyContent:'center', display:'Flex',alignItems:'center',marginTop:'5px', marginRight:'100px'}}>
+        <div className="form-container" style={{justifyContent:'center', display:'Flex',alignItems:'center',marginTop:'90px', marginRight:'100px'}}>
         <form onSubmit={handleSubmit}>
         <div className="form">
         <div className="title">Welcome</div>
@@ -151,23 +141,11 @@ useEffect(() => {
 
       
         <div className="input-container ic2">
-        <Select
-      id="courseName"
-      defaultValue="Course"
-      value={courseName}
-      onChange={handleCourseChange}
-      className="select"
-    >
-      {dataCourses.map((item) => (
-        <Option key={item._id} value={item._id}>
-          {item.title}
-        </Option>
-      ))}
-    </Select>
+    
    
     </div>
        <br></br>
-    {errors.courseName && <Alert style={{paddingBottom:'10px;',height:'30px'}} message={errors.courseName} type="error" showIcon/>}
+   
     <>
       {contextHolder}
         <button type="text" className="submit">Add</button>

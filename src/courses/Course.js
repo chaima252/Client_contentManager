@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../sidebar/Sidebar";
+import { useNavigate } from 'react-router-dom';
 import "./course.css";
 import { Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
@@ -18,6 +19,7 @@ import { DialogTitle } from "@mui/material";
 import { DialogContent } from "@mui/material";
 
 function Course() {
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -219,7 +221,7 @@ function Course() {
           </Link>
           <div className='courses-box-container'>
             {courses.map((course) => (
-              <div className='course-card' key={course.id}>
+              <div onClick={()=> navigate('/unitsByCourse',{ state: { idCourse: course._id, courseTitle: course.title } })} className='course-card' key={course.id}>
                 <div className='course-card-content'>
                   <p className='heading'>{course.title}</p>
                   <p className='description'>{course.description}</p>

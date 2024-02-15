@@ -5,6 +5,7 @@ import AddUnit from './Units/addUnit';
 import ManageUnits from './Units/manageUnits';
 import Course from './courses/Course';
 import AddCourse from './courses/AddCourse';
+import UnitsByCourse from './Units/unitsByCourse';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
        <Route path="/manageUnits" element={<ManageUnits />}/>
        <Route path="/courses" element={<Course />} />
        <Route path="/addcourse" element={<AddCourse />} />
+       <Route path="/unitsByCourse" element={<UnitsByCourse/>} />
 
       
     </Routes>

@@ -5,9 +5,10 @@
    
     border-radius: 20px;
     box-sizing: border-box;
-    height: 600px;
+    height: 500px;
     padding: 20px;
     width: 420px;
+    align-items: center;
   }
   
   .title {
@@ -51,8 +52,8 @@
   }
 
   .select {
-    border-radius: 12px; 
-    background-color: #65657b; 
+    border-radius: 7px; 
+    background-color: #fcfcfc;
 
  height: 100%;
     width: 100%;
