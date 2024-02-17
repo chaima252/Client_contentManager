@@ -221,7 +221,7 @@ function Course() {
           </Link>
           <div className='courses-box-container'>
             {courses.map((course) => (
-              <div onClick={()=> navigate('/unitsByCourse',{ state: { idCourse: course._id, courseTitle: course.title } })} className='course-card' key={course.id}>
+              <div  className='course-card' key={course.id}>
                 <div className='course-card-content'>
                   <p className='heading'>{course.title}</p>
                   <p className='description'>{course.description}</p>
@@ -240,6 +240,7 @@ function Course() {
                       }}
                     />
                   </div>
+                  <button className="navigate_units" onClick={()=> navigate('/unitsByCourse',{ state: { idCourse: course._id, courseTitle: course.title } })}>see units</button>
                 </div>
               </div>
             ))}
