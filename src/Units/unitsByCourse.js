@@ -52,6 +52,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   
     const [unitUpdatedName, setUnitUpdatedName] = useState('');
     const [newUnit, setNewUnit] = useState('') ; 
+    const [unitName,setUnitName]=useState('') ;
+    const [unitId,setUnitId] = useState('') ; 
     
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -100,31 +102,45 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     
   }
   
-  const handleUnitUpdatedName = (event)=> {
-  setUnitUpdatedName(event.target.value) ;
-  }
-  
-  
+  const getUnitById = async (id) => { 
+
+    console.log("id unit ",id) ;
+
+    try {
+      const response = await axios.get(`http://localhost:5002/get_unit/${id}`); 
+      console.log("unit by id:",response) ;
+      setUnitName(response.data.title) ;
+        
+    } catch(error) {
+      console.log("ERROR ",error)
+    }
+
+   }
+
+
+
+
 
   const handleNewUnit = (event) => {
     setNewUnit(event.target.value);
+  }
 
-  
+  const handleModelUpdated = (id) => { 
+    setModalOpen(true) ;
+    getUnitById(id) ; 
   }
   
-  const updateUnit = async (unit) => { 
+  const updateUnit = async () => { 
   
-    const unitUpdated = {
-      idCourse: idCourse,
-      title : unitUpdatedName,
-    } 
-
-     console.log("unit updated", unitUpdated)
+   
   
     try {
-      const response = await axios.put(`http://localhost:5002/update_unit/${unit._id}`,unitUpdated); 
-      console.log("Response ",response)
-      window.location.reload(true);
+      const response = await axios.patch(`http://localhost:5002/update_unit/${unitId}`,{
+        title : unitName
+      }).then((res)=> { console.log("Response ",res) 
+      window.location.reload(false) }
+      ) 
+     
     } catch (error) {
      console.log("ERROR ",error)
     } 
@@ -266,13 +282,27 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
              <IconButton aria-label="delete" color="error"  onClick={()=> deleteUnit(unit._id)} >
             <Delete />
           </IconButton>
-          <IconButton aria-label="edit" color="secondary" onClick={() => setModalOpen(true)} >
-            <EditIcon />
+          <IconButton aria-label="edit" color="secondary" onClick={() => 
+          { setUnitId(unit._id)
+           handleModelUpdated(unit._id)
+          }
+            } >
+            <EditIcon  />
           </IconButton>
              
              </StyledTableCell>
             
-             <Modal
+           
+             </TableRow>
+
+             
+  
+             
+            
+            )) }
+
+
+<Modal
           title="Update Unit"
           titleColor ="#1f1246"
           centered
@@ -283,26 +313,20 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
             }
           }}
           open={modalOpen}
-          onOk={ () => updateUnit(unit)}
+          onOk={ () => updateUnit()}
           onCancel={() => setModalOpen(false)}
         >
           <div style={{marginTop:'15px'}}>
           <input id="unitName" className="input" 
             type="text" placeholder="Unit name "
-          defaultValue={unit.title}
-         
-          onChange={handleUnitUpdatedName}
+          value={unitName}
+          onChangeCapture={(e)=> setUnitName(e.target.value)}
             style={{height:'40px'}}
             />
             <br/>
             <br/>
         </div>
         </Modal>
-             </TableRow>
-  
-             
-            
-            )) }
   
   
             
