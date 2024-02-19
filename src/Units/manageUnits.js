@@ -18,7 +18,8 @@ import { Modal } from "antd";
 import { Select } from "antd";
 import axios from "axios";
 import IconButton from "@mui/material/IconButton";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from "@mui/icons-material/Search";
+import FilterListIcon from "@mui/icons-material/FilterList";
 
 import "./style.css";
 //pagination
@@ -106,10 +107,16 @@ function ManageUnits() {
 
   //! FILTERING DATA, MUI FILTERING
   const [filterUnitName, setFilterUnitName] = useState("");
+  const [filterCourseName, setFilterCourseName] = useState("");
 
   const handleUnitNameFilterChange = (event) => {
     const inputValue = event.target.value;
     setFilterUnitName(inputValue);
+  };
+
+  const handleCourseNameFilterChange = (event) => {
+    const inputValue = event.target.value;
+    setFilterCourseName(inputValue);
   };
 
   useEffect(() => {
@@ -121,6 +128,7 @@ function ManageUnits() {
         );
         setDataCourses(responseCourses.data);
         setDataUnits(response.data);
+        console.log(response.data)
         console.log("Data courses ", responseCourses.data);
       } catch (error) {
         console.log("ERROR ", error);
@@ -235,21 +243,35 @@ function ManageUnits() {
               Add Unit
             </Button>
           </Link> */}
-       
+          <div className='filter-buttons'>
+            <CustomTextField
+              label='Search Unit Name'
+              variant='outlined'
+              InputProps={{
+                endAdornment: (
+                  <CustomIconButton>
+                    <SearchIcon color='inherit' />
+                  </CustomIconButton>
+                ),
+              }}
+              value={filterUnitName}
+              onChange={handleUnitNameFilterChange}
+            />
 
-          <CustomTextField
-            label='Search Unit Name'
-            variant='outlined'
-            InputProps={{
-              endAdornment: (
-                <CustomIconButton>
-                  <SearchIcon color="inherit" />
-                </CustomIconButton>
-              ),
-            }}
-            value={filterUnitName}
-            onChange={handleUnitNameFilterChange}
-          />
+            <CustomTextField
+              label='Filter by Course'
+              variant='outlined'
+              InputProps={{
+                endAdornment: (
+                  <CustomIconButton>
+                    <FilterListIcon color='inherit' />
+                  </CustomIconButton>
+                ),
+              }}
+              value={filterCourseName}
+              onChange={handleCourseNameFilterChange}
+            />
+          </div>
 
           <TableContainer
             style={{
@@ -265,7 +287,6 @@ function ManageUnits() {
             <Table sx={{ minWidth: 700 }} aria-label='customized table'>
               <TableHead>
                 <TableRow>
-                  <StyledTableCell>ID Unit</StyledTableCell>
                   <StyledTableCell>Unit Name</StyledTableCell>
                   <StyledTableCell>Course </StyledTableCell>
                   <StyledTableCell>Lessons</StyledTableCell>
@@ -281,14 +302,16 @@ function ManageUnits() {
                           .toLowerCase()
                           .includes(filterUnitName.toLowerCase())
                       )
+                      .filter((unit) =>
+                        unit.courseTitle
+                          .toLowerCase()
+                          .includes(filterCourseName.toLowerCase())
+                      )
                       .slice((page - 1) * rowsperpage, page * rowsperpage)
                   : dataUnits
                 ).map((unit, i) => {
                   return (
                     <TableRow key={i} content={unit}>
-                      <StyledTableCell component='th' scope='row'>
-                        {unit.idUnit}
-                      </StyledTableCell>
                       <StyledTableCell style={{ fontWeight: "bold" }}>
                         {unit.unitTitle}
                       </StyledTableCell>

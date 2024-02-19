@@ -45,8 +45,8 @@ function Sidebar() {
             <span>Units</span>
           </Link>
         </li>
-        <li>
-          <Link to={"/"}>
+        <li className={isActive('/addlesson') ? 'selected' : ''}>
+          <Link to={"/addlesson"}>
             <i>
               <PlayLessonIcon style={{ width: "60px" }} />
             </i>

@@ -8,6 +8,9 @@ import AddCourse from './courses/AddCourse';
 import UnitsByCourse from './Units/unitsByCourse';
 import AddMTExercise from './exercises/addMTExercise';
 
+
+
+import AddLesson from './lessons/AddLesson'
 function App() {
   return (
     <>
@@ -20,6 +23,8 @@ function App() {
        <Route path="/unitsByCourse" element={<UnitsByCourse/>} />
        <Route path="/createExercise" element={<AddMTExercise/>} />
        
+
+       <Route path="/addlesson" element={<AddLesson />} />
 
       
     </Routes>
