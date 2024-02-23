@@ -7,6 +7,7 @@ import Course from './courses/Course';
 import AddCourse from './courses/AddCourse';
 import UnitsByCourse from './Units/unitsByCourse';
 import AddMTExercise from './exercises/addMTExercise';
+import Exercises from './exercises/Exercises';
 
 
 
@@ -25,6 +26,7 @@ function App() {
        
 
        <Route path="/addlesson" element={<AddLesson />} />
+       <Route path="/exercises" element={<Exercises />} />
 
       
     </Routes>

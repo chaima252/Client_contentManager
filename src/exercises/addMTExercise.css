@@ -13,13 +13,23 @@
 .custom-steps .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
   border-color: #1f1246; /* Change color of finish step icon */
 }
+.css-dev-only-do-not-override-1rqnfsa ant-float-btn ant-float-btn-primary ant-float-btn-circle {
+  background-color: #1f1246;
+}
+.ant-float-btn-body {
+  background-color: #1f1246;
+}
+
+:where(.css-dev-only-do-not-override-1rqnfsa).ant-steps .ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title::after {
+  background-color: #7659f1;
+}
 
 .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
   border-color: #1f1246; /* Change color of finish step icon */
 }
 
 .content-step {
-  height: 300px;
+  height: auto;
   text-align: center;
   width: 80%;
   color: #1f1246;
@@ -47,6 +57,16 @@
   margin-top: 15px;
 }
 
+.option {
+  margin-left: 20px;
+  font-family: monospace;
+}
+
+.response {
+  margin-left: 50px;
+  font-family: monospace;
+}
+
 /* form starting stylings ------------------------------- */
 .group {
   position: relative;
@@ -58,17 +78,20 @@ input {
   display: block;
   width: 400px;
   border: none;
-  border-bottom: 1px solid #757575;
+  font-family: monospace;
+  border-bottom: 1px solid #35e9bc;
 }
 input:focus {
   outline: none;
 }
+
 
 /* LABEL ======================================= */
 label {
   color: #999;
   font-size: 18px;
   font-weight: normal;
+  font-family: monospace;
   position: absolute;
   pointer-events: none;
   left: 5px;
@@ -83,7 +106,7 @@ input:focus ~ label,
 input:valid ~ label {
   top: -20px;
   font-size: 14px;
-  color: #5264ae;
+  color: #35e9bc;
 }
 
 /* BOTTOM BARS ================================= */
@@ -99,7 +122,7 @@ input:valid ~ label {
   width: 0;
   bottom: 1px;
   position: absolute;
-  background: #5264ae;
+  background: #35e9bc;
   transition: 0.2s ease all;
   -moz-transition: 0.2s ease all;
   -webkit-transition: 0.2s ease all;
@@ -138,7 +161,7 @@ input:focus ~ .highlight {
 /* ANIMATIONS ================ */
 @-webkit-keyframes inputHighlighter {
   from {
-    background: #5264ae;
+    background: #35e9bc;
   }
   to {
     width: 0;
@@ -147,7 +170,7 @@ input:focus ~ .highlight {
 }
 @-moz-keyframes inputHighlighter {
   from {
-    background: #5264ae;
+    background: #35e9bc;
   }
   to {
     width: 0;
@@ -156,7 +179,7 @@ input:focus ~ .highlight {
 }
 @keyframes inputHighlighter {
   from {
-    background: #5264ae;
+    background: #35e9bc;
   }
   to {
     width: 0;

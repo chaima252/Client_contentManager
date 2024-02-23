@@ -86,7 +86,7 @@ function AddCourse() {
                     type='text'
                     name='title'
                     {...register("title", { required: "Title is required" })}
-                  />
+                  /> 
                   <p className='errors-dialog'>
                     {errors.title && errors.title.message}
                   </p>

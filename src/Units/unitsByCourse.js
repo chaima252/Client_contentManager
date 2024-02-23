@@ -132,8 +132,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   
   const updateUnit = async () => { 
   
-   
-  
     try {
       const response = await axios.patch(`http://localhost:5002/update_unit/${unitId}`,{
         title : unitName
