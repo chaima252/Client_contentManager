@@ -27,7 +27,7 @@ const [lessonName,setLessonName]=useState('Lesson');
 const [dataCourses, setDataCourses] = useState([]) ;
 const [dataUnits,setDataUnits] = useState([]);
 const [dataLessons,setDataLessons] = useState([]);
-
+const [selectedTypeValue, setSelectedTypeValue] = useState('Multiple Choice');
 const [errors,setErrors]=useState({});
 //const [handleErrors,setHandleErrors]=useState({});
 
@@ -93,6 +93,16 @@ const removeOption = (index) => {
   setOptions(newOptions);
 };
 
+const createExercise =async (exerise) => {
+
+  try  {
+    const response = await axios.post('http://localhost:5002/create_exercise', exerise); 
+    console.log("Response from api : ",response.data) ;
+
+  } catch(error) {
+   console.log("ERROR ",error.message)
+  }
+}
 
 const handleExercise = ()=> {
 
@@ -120,10 +130,27 @@ if (options.length===2 && options.some(str => str === "") ) {
 
 setErrors(newErrors);
 
+console.log("erros is null ? ", (Object.keys(newErrors).length === 0))
+
+if (Object.keys(newErrors).length === 0) {
+
   console.log("Question : ",question) ; 
   console.log("Options ",options);
   console.log("Response",response) ;
-  message.success('Processing complete!')
+
+
+  const exercise = {
+    idLesson : "5a5e9c3f8f0d86d951e8d3f3" ,
+    type: selectedTypeValue,
+    question:question,
+    options:options,
+    response: response
+  }
+
+  createExercise(exercise) ; 
+  message.success('Processing complete!') 
+}
+ 
 }
 
 const steps = [
@@ -206,11 +233,20 @@ const steps = [
    
 
     <Select  style={{marginTop:'20px',marginLeft:'80px',width:'200px'}}
-    className='select' key={"4"} defaultValue="Multiple Choice">
-           <Option value="mc"> <CheckBoxOutlineBlankIcon 
-           style={{marginTop:'20px'}}
-           />   Multiple Choice </Option>
-           <Option value="sc"> <RadioButtonUncheckedIcon/> Single Choice</Option>
+    className='select' 
+    key={"4"}
+     defaultValue="Multiple Choice"
+     onChange={(v)=> setSelectedTypeValue(v)}
+     value={selectedTypeValue}
+     >
+           <Option value="Multiple Choice"> <CheckBoxOutlineBlankIcon 
+           fontSize='10'
+           style={{marginTop:'10px'}}
+           />  <span style={{marginTop:'10px'}}>  Multiple Choice </span>   </Option>
+           <Option value="Single Choice"> <RadioButtonUncheckedIcon 
+          fontSize='10'
+           style={{marginTop:'10px'}}
+           />  <span style={{marginTop:'20px'}}> Single Choice </span></Option>
          
          </Select>
     </div>
@@ -220,8 +256,14 @@ const steps = [
     {options.map((option, index) => (
     <div style={{display:'flex'}}>
 
-      <RadioButtonUncheckedIcon 
-      style={{marginLeft:'50px',marginTop:'20px'}}/>
+ 
+{selectedTypeValue === 'Multiple Choice' ? (
+   <CheckBoxOutlineBlankIcon style={{ marginLeft: '50px', marginTop: '20px' }} />
+    ) : (
+      <RadioButtonUncheckedIcon style={{ marginLeft: '50px', marginTop: '20px' }} />
+          )}
+
+   
     <div className="group option">      
       <input type="text" required style={{width: '300px'}} 
        value={option}

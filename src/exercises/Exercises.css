@@ -22,3 +22,16 @@ h2 {
     border-radius: 20px;
 }
 
+.button-view {
+    background-color: #7659f1;
+    color: aliceblue;
+}
+
+:where(.css-dev-only-do-not-override-1rqnfsa).ant-btn.ant-btn-circle.ant-btn {
+    background-color: #D04848;
+}
+
+:where(.css-dev-only-do-not-override-1rqnfsa).ant-btn.ant-btn-icon-only .anticon {
+    color: aliceblue;
+}
+
