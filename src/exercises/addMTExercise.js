@@ -1,13 +1,14 @@
-import React ,{ useState,useEffect } from 'react'
+import React ,{ useState,useEffect} from 'react'
 import Sidebar from '../sidebar/Sidebar';
 import './addMTExercise.css'
 import { Button, message, Steps, theme, Select,Input, Radio } from 'antd';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import { FloatButton,Alert } from 'antd';
-import   {PlusCircleOutlined}      from '@ant-design/icons';
+import   {PlusCircleOutlined,ArrowLeftOutlined,ArrowRightOutlined}      from '@ant-design/icons';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useForm } from "react-hook-form";
+import { useNavigate, useNavigation } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -16,6 +17,7 @@ const { Option } = Select;
 
 function AddMTExercise() {
     const { token } = theme.useToken();
+    const navigate=useNavigate();
 const [current, setCurrent] = useState(0);
 const [question,setQuestion] = useState('');
 const [response,setResponse] = useState(''); 
@@ -45,21 +47,7 @@ useEffect(() => {
   fetchData();
 }, []);
 
-/*
-const {
-  register,
-  handleSubmit,
-  formState: { errors },
-} = useForm({
-  defaultValues: {
-    question: "",
-    options: [''],
-    response: "",
-  },
-});
 
-
-*/
 const getUnitsByCourse=async(idCourse)=> {
 
   try {
@@ -73,8 +61,15 @@ const getUnitsByCourse=async(idCourse)=> {
   } 
 }
 
-const getLessonsByUnit=(idUnit)=>  {
+const getLessonsByUnit=async (idUnit)=>  {
 
+  try {
+    const response = await axios.get(`http://localhost:5002/get_lessons/${idUnit}`); 
+  setDataLessons(response.data) ; 
+  console.log("data lessons : ",response.data)
+  } catch (error) {
+    console.log("ERROR ",error) ;
+  }
 }
 
 const addOption = () => {
@@ -134,13 +129,14 @@ console.log("erros is null ? ", (Object.keys(newErrors).length === 0))
 
 if (Object.keys(newErrors).length === 0) {
 
+  console.log("Lesson id : ",lessonName) ; 
   console.log("Question : ",question) ; 
   console.log("Options ",options);
   console.log("Response",response) ;
 
 
   const exercise = {
-    idLesson : "5a5e9c3f8f0d86d951e8d3f3" ,
+    idLesson : lessonName ,
     type: selectedTypeValue,
     question:question,
     options:options,
@@ -149,6 +145,7 @@ if (Object.keys(newErrors).length === 0) {
 
   createExercise(exercise) ; 
   message.success('Processing complete!') 
+  navigate('/exercises') ;
 }
  
 }
@@ -203,8 +200,11 @@ const steps = [
          <Select className='select' key={"3"}
          value={lessonName} 
          onChange={(e)=> setLessonName(e)} style={{marginBottom:'130px'}}>
-           <Option value="Lesson1">Java Get Started</Option>
-           <Option value="Lesson2">Java Comments</Option>
+          {dataLessons.map((lesson)=> (
+  <Option value={lesson._id}>{lesson.title}</Option>
+          ))}
+         
+         
          
          </Select>
          </div>
@@ -332,7 +332,13 @@ const steps = [
       // Check if the course is selected
   if (current === 0 && courseName==='Course') {
     // If course is not selected, display an error message
-    message.error("Please select a course before proceeding.");
+    message.error("Please select a course before proceeding.",{
+      style: {
+        // Your styles here
+        justifyContent: 'center'
+        
+      },
+    });
   }
   else if (current === 0 && courseName!=='Course' ) {
     setCurrent(current + 1);
@@ -340,6 +346,11 @@ const steps = [
   } 
   else if (current === 1 && unitName==='Unit' ) {
     message.error("Please select a unit before proceeding.");
+  } 
+  else if (current === 1 && unitName!=='Unit' ) {
+    setCurrent(current + 1);
+    getLessonsByUnit(unitName) ;
+
   } 
  
 
@@ -371,7 +382,7 @@ const steps = [
             fontSize: "25px",
             marginTop: "35px",
             color: "#1f1246",
-          }}> 📝 Create multiple choice Exercise  </h2>
+          }}> 📝 Create your Exercise  </h2>
 
     <>
       <Steps current={current} items={items} 
@@ -382,9 +393,18 @@ const steps = [
     
         </div>
       <div style={{ marginTop: 24 , marginLeft:'120px' }}>
+       
+      {current > 0 && (
+          <Button style={{ margin: '0 8px' }} 
+          icon={<ArrowLeftOutlined/>}
+          onClick={() => prev()}>
+            Previous
+          </Button>
+        )}
         {current < steps.length - 1 && (
   
           <Button className='custom-button'
+          icon={<ArrowRightOutlined/>}
           type="primary" onClick={() => next()}>
             Next
           </Button>
@@ -395,11 +415,7 @@ const steps = [
             Done
           </Button>
         )}
-        {current > 0 && (
-          <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
-            Previous
-          </Button>
-        )}
+       
       </div>
     </>
 

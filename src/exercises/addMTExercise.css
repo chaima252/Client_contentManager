@@ -33,6 +33,7 @@
   text-align: center;
   width: 80%;
   color: #1f1246;
+  background-color: #f2effe;
   margin-left: 120px;
 
   border-radius: 5px;
@@ -40,8 +41,9 @@
   /* margin-top:  16; */
 }
 
+
 .select {
-  width: 150px;
+  width: 190px;
   height: 40px;
   align-content: center;
   justify-content: center;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Sidebar from '../sidebar/Sidebar';
 import { Button, Card, Col, Row,Select,Tooltip,Modal } from 'antd';
-import   {PlusOutlined,EyeOutlined,DeleteOutlined}      from '@ant-design/icons';
+import   {PlusOutlined,EyeOutlined,DeleteOutlined,ArrowLeftOutlined,ArrowRightOutlined}      from '@ant-design/icons';
 import axios from 'axios';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -30,7 +30,8 @@ useEffect(()=> {
     try {
       const response = await axios.get('http://localhost:5002/get_recent_exercises'); 
       console.log("Response from api : ",response.data) ;
-      setRecentExercises(response.data) ;
+      setRecentExercises(response.data.slice().reverse()) ;
+      
      
     } catch (error) {
       console.log("ERROR ",error.message)
@@ -89,7 +90,7 @@ const handleModalView = (id)=> {
           <Card 
           className='plus-card'
           style={{with:'400px',height:"150px",
-           marginLeft:'10px',alignItems:'center',justifyContent:'center' , alignItems:'center'}}>
+           marginLeft:'10px',alignItems:'center',justifyContent:'center' , alignItems:'center',marginTop:'15px'}}>
           <PlusOutlined 
           style = {{justifyContent:'center' , alignItems:'center' ,
             fontSize: '60px',alignContent:'center',
@@ -101,11 +102,19 @@ const handleModalView = (id)=> {
        
         { recentExercises.map((exercise)=> ( 
 <Col span={4}>
-<Card style={{height:"180px", marginLeft:'10px'}}>
+<Card style={{height:"180px", marginLeft:'10px',
+ background: 'linear-gradient(#f5f4f8, #f9f9fb) padding-box,linear-gradient(145deg, transparent 2vh, #7659f1, #35e9bc) border-box',
+border: '5px solid transparent',
+borderRadius:'20px'
+}}>
  
- <p> <span>  Question : 
-  </span> {exercise.question.slice(0, 20)} <span style={{color:'grey',fontWeight:'bold'}}>...</span></p>
- <p> Options : <span> {exercise.options.length} </span> </p>
+ <p style={{fontFamily:'monospace'}}> <span style={{fontWeight:'bold',fontFamily:'monospace', color:'#1f1246'}}>  Question : 
+  </span> {exercise.question.slice(0, 14)} <span style={{color:'grey',fontWeight:'bold',cursor:'pointer'}} 
+  onClick={()=> {handleModalView(exercise._id)
+    setExerciseId(exercise._id)
+    }}
+  >...</span></p>
+ <p style={{fontWeight:'bold',fontFamily:'monospace', color:'#1f1246'}}> Options : <span style={{fontWeight:'bold',fontFamily:'monospace', color:'#1f1246'}}> {exercise.options.length} </span> </p>
 <div style={{display:"flex"}}>
 <Button  icon={<EyeOutlined />} 
  className='button-view'
@@ -141,21 +150,23 @@ const handleModalView = (id)=> {
         >
           <div style={{marginTop:'15px'}}>
           
-          <p> <span> Question  </span> {question} </p>
+          <p> <span> Question : </span> {question} </p>
           <div >
       
     
 
           {options.map((option, index) => (
     <div style={{ display: 'flex', alignItems: 'center' }} key={index}>
+      
       {typeExercise === "Multiple Choice Exercise" ? (
         <CheckBoxOutlineBlankIcon fontSize='small' />
       ) : (
         <RadioButtonUncheckedIcon fontSize='small' />
       )}
-      <p style={{ marginLeft: '5px' }}>{option}</p>
+      <p style={{ marginLeft: '5px',color: option === response ? 'green' : 'inherit' ,  fontWeight: option === response ? 'bold' : 'normal' }}>{option}</p>
     </div>
   ))}
+   <p> <span> Response : </span> {response} </p>
      
            
           </div>
@@ -173,7 +184,8 @@ const handleModalView = (id)=> {
       <Card 
           className='plus-card'
           style={{with:'400px',height:"150px",
-           marginLeft:'10px',alignItems:'center',justifyContent:'center' , alignItems:'center'}}>
+           marginLeft:'10px',alignItems:'center',justifyContent:'center' ,
+            alignItems:'center',marginTop:'15px'}}>
           <PlusOutlined 
           style = {{justifyContent:'center' , alignItems:'center' ,
             fontSize: '60px',alignContent:'center',
@@ -183,19 +195,20 @@ const handleModalView = (id)=> {
           </Col>
        
         <Col span={4}>
-        <Card style={{height:"180px", marginLeft:'10px'}}>
+        <Card 
+        style={{height:"180px", marginLeft:'10px',
+        
+        background: 'linear-gradient(#f5f4f8, #f9f9fb) padding-box,linear-gradient(145deg, transparent 2vh, #7659f1, #35e9bc) border-box',
+border: '5px solid transparent',
+borderRadius:'20px'
+        }}>
             <p>Content for the exercise</p>
            
           </Card> 
         </Col>
         
 
-        <Col span={4}>
-        <Card style={{height:"180px", marginLeft:'10px'}}>
-            <p>Content for the exercise</p>
-           
-          </Card> 
-        </Col>
+      
 
         
       </Row>
