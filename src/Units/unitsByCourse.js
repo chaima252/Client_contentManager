@@ -42,29 +42,32 @@ function UnitsByCourse() {
   const [newUnit, setNewUnit] = useState("");
   const [unitName, setUnitName] = useState("");
   const [unitId, setUnitId] = useState("");
+  const [numberLessonsById, setNumberLessonsById] = useState('');
 
   const navigate = useNavigate();
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  useEffect(() => {
-    console.log("id course params", courseTitle);
+  console.log("id course params", courseTitle);
 
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5002/get_units/${idCourse}`
-        );
-        //  const responseCourses = await axios.get('http://localhost:5002/get_all_courses');
-        //   setDataCourses(responseCourses.data);
-        setDataUnits(response.data);
-        console.log("Data units by course ", response.data);
-      } catch (error) {
-        console.log("ERROR ", error);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5002/get_units/${idCourse}`
+      );
+      //  const responseCourses = await axios.get('http://localhost:5002/get_all_courses');
+      //   setDataCourses(responseCourses.data);
+      setDataUnits(response.data);
+      console.log("Data units by course ", response.data);
+    } catch (error) {
+      console.log("ERROR ", error);
+    }
+  };
+  useEffect(() => {
+   
 
     fetchData();
+   
   }, []);
 
   const deleteUnit = async (id) => {
@@ -95,6 +98,7 @@ function UnitsByCourse() {
       console.log("ERROR ", error);
     }
   };
+
 
   const handleNewUnit = (event) => {
     setNewUnit(event.target.value);

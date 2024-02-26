@@ -47,6 +47,7 @@ function Lessons() {
       const data = await axios.get(
         `http://localhost:5002/get_lessons/${idUnit}`
       );
+      console.log(data.data);
       setLessons(data.data);
     } catch (error) {
       console.log(error);
