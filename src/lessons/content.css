@@ -1,0 +1,32 @@
+.title_style_lesson {
+  padding: 12px 10px;
+  font-size: 14px;
+  font-family: monospace;
+  text-align: center;
+}
+
+/* .content_style_lesson{
+
+} */
+
+.lesson-content-container {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  flex-direction: column;
+  /* text-align: center; */
+  margin-top: 20px;
+  font-family: monospace;
+}
+
+.lesson-content-area {
+  height: 720px;
+  width: 800px;
+  border: 2px solid #264143;
+  border-radius: 20px;
+  box-shadow: 3px 4px 0px 1px;
+}
+
+.content_style_lesson {
+  margin-left: 40px;
+}

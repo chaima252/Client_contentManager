@@ -12,6 +12,8 @@ import Exercises from './exercises/Exercises';
 
 
 import AddLesson from './lessons/AddLesson'
+import Lessons from './lessons/Lessons';
+import ContentLesson from './lessons/ContentLesson';
 function App() {
   return (
     <>
@@ -28,7 +30,10 @@ function App() {
        <Route path="/addlesson" element={<AddLesson />} />
        <Route path="/exercises" element={<Exercises />} />
 
-      
+       <Route path="/lessonByUnits" element={<Lessons />} />
+       <Route path="/contentLesson" element={<ContentLesson />} />
+
+
     </Routes>
  </>
 

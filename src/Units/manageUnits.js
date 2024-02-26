@@ -128,7 +128,7 @@ function ManageUnits() {
         );
         setDataCourses(responseCourses.data);
         setDataUnits(response.data);
-        console.log(response.data)
+        console.log(response.data);
         console.log("Data courses ", responseCourses.data);
       } catch (error) {
         console.log("ERROR ", error);
@@ -329,7 +329,7 @@ function ManageUnits() {
                         </IconButton>
                         <IconButton
                           aria-label='edit'
-                          color='secondary'
+                          style={{ color: "#35e9bc" }}
                           onClick={() => setModalOpen(true)}
                         >
                           <EditIcon />
