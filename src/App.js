@@ -24,7 +24,7 @@ function App() {
        <Route path="/manageUnits" element={<ManageUnits />}/>
        <Route path="/courses" element={<Course />} />
        <Route path="/addcourse" element={<AddCourse />} />
-       <Route path="/unitsByCourse" element={<UnitsByCourse/>} />
+       <Route path="/unitsByCourse/:courseID" element={<UnitsByCourse/>} />
        <Route path="/createExercise" element={<AddMTExercise/>} />
        
 

@@ -17,7 +17,7 @@ import { Modal, message } from "antd";
 
 import axios from "axios";
 import IconButton from "@mui/material/IconButton";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./style.css";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -32,43 +32,43 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 function UnitsByCourse() {
   const location = useLocation();
-  const idCourse = location.state.idCourse;
+  // const idCourse = location.state.idCourse;
   const courseTitle = location.state?.courseTitle;
   const [dataUnits, setDataUnits] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAddOpen, setModalAddOpen] = useState(false);
 
-  const [unitUpdatedName, setUnitUpdatedName] = useState("");
+  // const [unitUpdatedName, setUnitUpdatedName] = useState("");
   const [newUnit, setNewUnit] = useState("");
   const [unitName, setUnitName] = useState("");
   const [unitId, setUnitId] = useState("");
-  const [numberLessonsById, setNumberLessonsById] = useState('');
+  // const [numberLessonsById, setNumberLessonsById] = useState('');
 
   const navigate = useNavigate();
+  const { courseID } = useParams();
 
   const [messageApi, contextHolder] = message.useMessage();
 
   console.log("id course params", courseTitle);
 
-  const fetchData = async () => {
+  const fetchData = async (courseID) => {
     try {
       const response = await axios.get(
-        `http://localhost:5002/get_units/${idCourse}`
+        `http://localhost:5002/get_units/${courseID}`
       );
-      //  const responseCourses = await axios.get('http://localhost:5002/get_all_courses');
-      //   setDataCourses(responseCourses.data);
+      console.log(courseID);
       setDataUnits(response.data);
       console.log("Data units by course ", response.data);
     } catch (error) {
-      console.log("ERROR ", error);
+      console.log("ERROR ", error.response.data);
     }
   };
-  useEffect(() => {
-   
 
-    fetchData();
-   
-  }, []);
+  useEffect(() => {
+    if (courseID) {
+      fetchData(courseID);
+    }
+  }, [courseID]);
 
   const deleteUnit = async (id) => {
     Modal.confirm({
@@ -99,7 +99,6 @@ function UnitsByCourse() {
     }
   };
 
-
   const handleNewUnit = (event) => {
     setNewUnit(event.target.value);
   };
@@ -129,7 +128,7 @@ function UnitsByCourse() {
     console.log("new unit name", newUnit);
     if (newUnit.trim().length !== 0) {
       const new_unit = {
-        idCourse: idCourse,
+        idCourse: courseID,
         title: newUnit,
       };
 
@@ -320,36 +319,34 @@ function UnitsByCourse() {
                         </IconButton>
                       </StyledTableCell>
                       <StyledTableCell>
-                        <div className="buttons-lessons">
-
-                        
-                        <button
-                          className='show-lesson-button'
-                          onClick={() =>
-                            navigate("/lessonByUnits", {
-                              state: {
-                                idUnit: unit._id,
-                                unitTitle: unit.title,
-                              },
-                            })
-                          }
-                        >
-                          Show Lessons
-                        </button>
-                        <button
-                          className='show-lesson-button'
-                          onClick={() =>
-                            navigate("/addlesson", {
-                              state: {
-                                idUnit: unit._id,
-                                unitTitle: unit.title,
-                              },
-                            })
-                          }
-                        >
-                          {" "}
-                          Add lesson
-                        </button>
+                        <div className='buttons-lessons'>
+                          <button
+                            className='show-lesson-button'
+                            onClick={() =>
+                              navigate("/lessonByUnits", {
+                                state: {
+                                  idUnit: unit._id,
+                                  unitTitle: unit.title,
+                                },
+                              })
+                            }
+                          >
+                            Show Lessons
+                          </button>
+                          <button
+                            className='show-lesson-button'
+                            onClick={() =>
+                              navigate("/addlesson", {
+                                state: {
+                                  idUnit: unit._id,
+                                  unitTitle: unit.title,
+                                },
+                              })
+                            }
+                          >
+                            {" "}
+                            Add lesson
+                          </button>
                         </div>
                       </StyledTableCell>
                     </TableRow>

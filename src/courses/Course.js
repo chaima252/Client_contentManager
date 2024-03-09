@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../sidebar/Sidebar";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "./course.css";
 import { Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
@@ -221,7 +221,7 @@ function Course() {
           </Link>
           <div className='courses-box-container'>
             {courses.map((course) => (
-              <div  className='course-card' key={course.id}>
+              <div className='course-card' key={course.id}>
                 <div className='course-card-content'>
                   <p className='heading'>{course.title}</p>
                   <p className='description'>{course.description}</p>
@@ -240,7 +240,18 @@ function Course() {
                       }}
                     />
                   </div>
-                  <button className="navigate_units" onClick={()=> navigate('/unitsByCourse',{ state: { idCourse: course._id, courseTitle: course.title } })}>see units</button>
+                  <button
+                    className='navigate_units'
+                    onClick={() =>
+                      navigate(`/unitsByCourse/${course._id}`, {
+                        state: {
+                          courseTitle: course.title,
+                        },
+                      })
+                    }
+                  >
+                    see units
+                  </button>
                 </div>
               </div>
             ))}
