@@ -7,7 +7,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -31,9 +31,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 function Lessons() {
+  const{unitID} = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const idUnit = location.state.idUnit;
   const unitTitle = location.state.unitTitle;
 
   const [lessons, setLessons] = useState([]);
@@ -41,7 +41,7 @@ function Lessons() {
   const getLessons = async () => {
     try {
       const data = await axios.get(
-        `http://localhost:5002/get_lessons/${idUnit}`
+        `http://localhost:5002/get_lessons/${unitID}`
       );
       console.log(data.data);
       setLessons(data.data);
@@ -52,7 +52,7 @@ function Lessons() {
 
   useEffect(() => {
     getLessons();
-  }, []);
+  }, [unitID]);
 
   return (
     <div className='lessons'>
@@ -101,9 +101,8 @@ function Lessons() {
                         <button
                           className='show-lesson-button'
                           onClick={() =>
-                            navigate("/contentLesson", {
+                            navigate(`/contentLesson/${lesson._id}`, {
                               state: {
-                                idLesson: lesson._id,
                                 lessonTitle: lesson.title,
                               },
                             })

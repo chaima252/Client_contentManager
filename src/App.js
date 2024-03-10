@@ -31,8 +31,8 @@ function App() {
        <Route path="/addlesson" element={<AddLesson />} />
        <Route path="/exercises" element={<Exercises />} />
 
-       <Route path="/lessonByUnits" element={<Lessons />} />
-       <Route path="/contentLesson" element={<ContentLesson />} />
+       <Route path="/lessonByUnits/:unitID" element={<Lessons />} />
+       <Route path="/contentLesson/:lessonID" element={<ContentLesson />} />
        <Route path="/overviewlessons" element={<OverviewLessons />} />
 
 

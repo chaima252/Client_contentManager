@@ -323,9 +323,8 @@ function UnitsByCourse() {
                           <button
                             className='show-lesson-button'
                             onClick={() =>
-                              navigate("/lessonByUnits", {
+                              navigate(`/lessonByUnits/${unit._id}`, {
                                 state: {
-                                  idUnit: unit._id,
                                   unitTitle: unit.title,
                                 },
                               })
