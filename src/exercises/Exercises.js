@@ -23,8 +23,8 @@ const Exercises = () => {
   const [exerciseId, setExerciseId] = useState("");
   const [typeExercise, setTypeExercise] = useState("");
   const [question, setQuestion] = useState("");
-  const [options, setOptions] = useState([]);
-  const [response, setResponse] = useState("");
+  const [options, setOptions] = useState([[{ text: '', checked: false }]]);
+
 
   useEffect(() => {
     const fetchRecentExercises = async () => {
@@ -42,29 +42,11 @@ const Exercises = () => {
     fetchRecentExercises();
   }, []);
 
-  const getExerciseById = async (id) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5002/get_exercise/${id}`
-      );
+  
 
-      console.log("Response exercise by id ", response.data);
-      setTypeExercise(response.data.type + " Exercise");
-      setQuestion(response.data.question);
-      setOptions(response.data.options);
+ 
 
-      setResponse(response.data.response);
-    } catch (error) {
-      console.log("ERROR ",error.message)
-    }
-
-  }
-
-  fetchRecentExercises() ;
-
-},[])
-   
-
+  
 const getExerciseById = async(id)=> {
 
   try {
@@ -77,7 +59,7 @@ const getExerciseById = async(id)=> {
     setQuestion(response.data.question) ;
     setOptions(response.data.options) ;
   
-    setResponse(response.data.response) ;
+   
 
   } catch(error) {
     console.log("ERROR ",error.message);
@@ -184,10 +166,10 @@ borderRadius:'20px'
       ) : (
         <RadioButtonUncheckedIcon fontSize='small' />
       )}
-      <p style={{ marginLeft: '5px',color: option === response ? 'green' : 'inherit' ,  fontWeight: option === response ? 'bold' : 'normal' }}>{option}</p>
+      <p style={{ marginLeft: '5px',color: option.checked === true ? 'green' : 'inherit' ,  fontWeight: option.checked === true? 'bold' : 'normal' }}>{option.text}</p>
     </div>
   ))}
-   <p> <span> Response : </span> {response} </p>
+  
      
            
           </div>
