@@ -63,6 +63,28 @@ const getExerciseById = async(id)=> {
   }
 }
 
+const deleteExercise=async(id)=> {
+
+   Modal.confirm({
+      title: "Delete Exercise",
+      content: "Are you sure you want to delete this exercise?",
+      onOk() {
+        axios
+          .delete(`http://localhost:5002/delete_exercise/${id}`)
+          .then(() => {
+            window.location.reload(false);
+          });
+      },
+      okText: "Delete",
+      cancelText: "Cancel",
+      okButtonProps: {
+        style: { backgroundColor: "#C10000" },
+      },
+    });
+
+ 
+}
+
 const handleModalView = (id)=> {
 
   setModalViewOpen(true) ; 
@@ -123,7 +145,9 @@ borderRadius:'20px'
  }}
 > View </Button>
   <Tooltip title="Delete" >
-  <Button  style={{marginLeft:'10px' , backgroundColor:'FF6868'}} shape="circle" icon={<DeleteOutlined/>} />
+  <Button  style={{marginLeft:'10px' , backgroundColor:'FF6868'}} shape="circle" icon={<DeleteOutlined/>}
+  onClick={()=> {deleteExercise(exercise._id)}}
+  />
   </Tooltip>
   </div>
     </Card> 
@@ -163,10 +187,10 @@ borderRadius:'20px'
       ) : (
         <RadioButtonUncheckedIcon fontSize='small' />
       )}
-      <p style={{ marginLeft: '5px',color: option === response ? 'green' : 'inherit' ,  fontWeight: option === response ? 'bold' : 'normal' }}>{option}</p>
+      <p style={{ marginLeft: '5px',color: option.checked === true ? 'green' : 'inherit' ,  fontWeight: option.checked === true ? 'bold' : 'normal' }}>{option.text}</p>
     </div>
   ))}
-   <p> <span> Response : </span> {response} </p>
+ 
      
            
           </div>

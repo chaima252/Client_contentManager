@@ -1,13 +1,14 @@
 import React ,{ useState,useEffect} from 'react'
 import Sidebar from '../sidebar/Sidebar';
 import './addMTExercise.css'
-import { Button, message, Steps, theme, Select,Input, Radio } from 'antd';
+import { Button, message, Steps, theme, Select,
+  Input, Radio,Checkbox, CheckboxProps } from 'antd';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import { FloatButton,Alert } from 'antd';
+
 import   {PlusCircleOutlined,ArrowLeftOutlined,ArrowRightOutlined}      from '@ant-design/icons';
 import { DeleteOutlined } from '@ant-design/icons';
-import { useForm } from "react-hook-form";
+
 import { useNavigate, useNavigation } from 'react-router-dom';
 import axios from 'axios';
 
@@ -21,7 +22,7 @@ function AddMTExercise() {
 const [current, setCurrent] = useState(0);
 const [question,setQuestion] = useState('');
 const [response,setResponse] = useState(''); 
-const [options, setOptions] = useState(['']);
+const [options, setOptions] = useState([{ text: '', checked: false }]);
 const [courseName, setCourseName] = useState('Course') ;
 const [unitName,setUnitName] = useState('Unit');
 const [lessonName,setLessonName]=useState('Lesson'); 
@@ -31,6 +32,7 @@ const [dataUnits,setDataUnits] = useState([]);
 const [dataLessons,setDataLessons] = useState([]);
 const [selectedTypeValue, setSelectedTypeValue] = useState('Multiple Choice');
 const [errors,setErrors]=useState({});
+const [correctOptions, setCorrectOptions] = useState([]);
 //const [handleErrors,setHandleErrors]=useState({});
 
 useEffect(() => {
@@ -72,20 +74,43 @@ const getLessonsByUnit=async (idUnit)=>  {
   }
 }
 
-const addOption = () => {
-  setOptions([...options, '']); // Add a new empty option to the options array
-};
+
 
 const handleOptionChange = (index, value) => {
   const newOptions = [...options];
-  newOptions[index] = value;
-  setOptions(newOptions);
+    newOptions[index].text = value;
+    setOptions(newOptions);
+};
+const addOption = () => {
+  setOptions([...options, { text: '', checked: false }]);
 };
 
 const removeOption = (index) => {
   const newOptions = [...options];
   newOptions.splice(index, 1); // Remove the option at the given index
   setOptions(newOptions);
+};
+
+const handleSelectCorrectOption = (index) => {
+  if (selectedTypeValue === 'Single Choice') {
+    const newOptions = options.map((option, i) => ({
+      ...option,
+      checked: i === index,
+    }));
+    setOptions(newOptions);
+  } else {
+    const newOptions = [...options];
+    newOptions[index].checked = !newOptions[index].checked;
+    setOptions(newOptions);
+  }
+};
+
+const onChangeCheckBox = (e) => {
+  console.log(`checked = ${e.target.checked}`);
+};
+
+const onChangeRadio = (e) => {
+  console.log(`Radio = ${e.target.checked}`);
 };
 
 const createExercise =async (exerise) => {
@@ -105,18 +130,10 @@ const newErrors= {} ;
 if (question.trim().length===0) {
   newErrors.question="Question is Required!"
 } 
-if (response.trim().length===0)  
-{
-  newErrors.response="Response is Required!"
-}
 
 if (options.length===1) {
   newErrors.options="Please add options (minimum 2) !"
 } 
-
-if (options.includes(response)===false) {
-  newErrors.response="Response is not included in the options!"
-}
 
 
 if (options.length===2 && options.some(str => str === "") ) {
@@ -134,14 +151,13 @@ if (Object.keys(newErrors).length === 0) {
   console.log("Options ",options);
   console.log("Response",response) ;
 
-
   const exercise = {
     idLesson : lessonName ,
     type: selectedTypeValue,
     question:question,
     options:options,
-    response: response
-  }
+   
+  } 
 
   createExercise(exercise) ; 
   message.success('Processing complete!') 
@@ -258,15 +274,28 @@ const steps = [
 
  
 {selectedTypeValue === 'Multiple Choice' ? (
-   <CheckBoxOutlineBlankIcon style={{ marginLeft: '50px', marginTop: '20px' }} />
+   <input
+   type="checkbox"
+   style={{ marginLeft: '50px', marginBottom:'25px' }}
+   value={option.text}
+   checked={option.checked}
+   onChange={() => handleSelectCorrectOption(index)}
+ />
+  
     ) : (
-      <RadioButtonUncheckedIcon style={{ marginLeft: '50px', marginTop: '20px' }} />
+      <input
+      type="radio"
+      style={{ marginLeft: '50px', marginTop: '5px' }}
+      value={option.text}
+      checked={option.checked}
+      onChange={() => handleSelectCorrectOption(index)}
+    />
           )}
 
    
     <div className="group option">      
       <input type="text" required style={{width: '300px'}} 
-       value={option}
+       value={option.text}
        onChange={(e) => handleOptionChange(index, e.target.value)}
        
       
@@ -287,39 +316,13 @@ const steps = [
     <div style={{display:'flex',}}>
       
     <Button type="primary" 
-    style={{backgroundColor:'#1f1246',marginLeft:'50px'}}
+    style={{backgroundColor:'#1f1246',marginLeft:'50px',marginBottom:'22px'}}
     icon={<PlusCircleOutlined />} 
     onClick={addOption}
     size={10}>
        <span>   Another Option </span> 
           </Button>
     </div>
-
-    <div style={{marginTop:'30px'}}>
-    <div className="group response">      
-      <input type="text" required style={{width: '300px'}}
-      
-      value={response}
-      onChange={(e)=> setResponse(e.target.value)}
-     
-      />
-      <span className="highlight"></span>
-      <span className="bar" style={{width: '315px'}}></span>
-      <label>Response</label>
-      <p className='errors-dialog' 
-       style={{marginRight:'550px'}}>  {errors.response }</p> 
-     
-    </div>
-    
-      
-   
-   
-    </div>
-  
-
-
-   
-
 
             </div>
         )
