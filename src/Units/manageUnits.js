@@ -229,20 +229,7 @@ function ManageUnits() {
         </div>
 
         <div style={{ marginTop: "30px", marginRight: "60px" }}>
-          {/* <Link to='/addUnit' style={{ textDecoration: "none" }}>
-            <Button
-              variant='contained'
-              style={{
-                backgroundColor: "#7659F1",
-                width: "140px",
-                borderRadius: "10px",
-                color: "#e3e3e3",
-              }}
-              startIcon={<Add />}
-            >
-              Add Unit
-            </Button>
-          </Link> */}
+
           <div className='filter-buttons'>
             <CustomTextField
               label='Search Unit Name'

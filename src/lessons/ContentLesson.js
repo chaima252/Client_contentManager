@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../sidebar/Sidebar";
 import "./content.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import ReactHtmlParser from "html-react-parser"; // Import html-react-parser
 
 function ContentLesson() {
   const location = useLocation();
   const lessonTitle = location.state.lessonTitle;
-  const idLesson = location.state.idLesson;
-  // const [lessons, setLessons] = useState([]);
 
   const [content, setContent] = useState("");
 
+  const {lessonID} = useParams();
   //! function to get all lessons
   const getLessons = async () => {
     try {
       const data = await axios.get(
-        `http://localhost:5002/get_lesson/${idLesson}`
+        `http://localhost:5002/get_lesson/${lessonID}`
       );
       console.log(data.data);
       console.log(data.data.content);
       setContent(data.data.content);
-      // setLessons(data.data);
+
     } catch (err) {
       console.log(err);
     }
@@ -30,7 +29,7 @@ function ContentLesson() {
 
   useEffect(() => {
     getLessons();
-  }, []);
+  }, [lessonID]);
 
   return (
     <div className='content-lesson'>

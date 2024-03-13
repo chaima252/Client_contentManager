@@ -14,6 +14,7 @@ import Exercises from './exercises/Exercises';
 import AddLesson from './lessons/AddLesson'
 import Lessons from './lessons/Lessons';
 import ContentLesson from './lessons/ContentLesson';
+import OverviewLessons from './lessons/OverviewLessons';
 function App() {
   return (
     <>
@@ -23,15 +24,16 @@ function App() {
        <Route path="/manageUnits" element={<ManageUnits />}/>
        <Route path="/courses" element={<Course />} />
        <Route path="/addcourse" element={<AddCourse />} />
-       <Route path="/unitsByCourse" element={<UnitsByCourse/>} />
+       <Route path="/unitsByCourse/:courseID" element={<UnitsByCourse/>} />
        <Route path="/createExercise" element={<AddMTExercise/>} />
        
 
        <Route path="/addlesson" element={<AddLesson />} />
        <Route path="/exercises" element={<Exercises />} />
 
-       <Route path="/lessonByUnits" element={<Lessons />} />
-       <Route path="/contentLesson" element={<ContentLesson />} />
+       <Route path="/lessonByUnits/:unitID" element={<Lessons />} />
+       <Route path="/contentLesson/:lessonID" element={<ContentLesson />} />
+       <Route path="/overviewlessons" element={<OverviewLessons />} />
 
 
     </Routes>
