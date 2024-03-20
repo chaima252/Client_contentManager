@@ -12,6 +12,7 @@ import axios from "axios";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 
 import "./Exercises.css";
@@ -24,13 +25,14 @@ const Exercises = () => {
   const [typeExercise, setTypeExercise] = useState("");
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([[{ text: '', checked: false }]]);
-
+  const {lessonID} = useParams();
 
   useEffect(() => {
-    const fetchRecentExercises = async () => {
+    const fetchExercisesByIdLesson = async () => {
       try {
+        console.log("lessonID ",lessonID) ;
         const response = await axios.get(
-          "http://localhost:5002/get_recent_exercises"
+          `http://localhost:5002/get_exercises_by_lesson/${lessonID}`
         );
         console.log("Response from api : ", response.data);
         setRecentExercises(response.data.slice().reverse());
@@ -39,7 +41,7 @@ const Exercises = () => {
       }
     };
 
-    fetchRecentExercises();
+    fetchExercisesByIdLesson();
   }, []);
 
   
@@ -206,6 +208,11 @@ borderRadius:'20px'
                       marginTop: "12px",
                       color: "#35e9bc",
                     }}
+                    onClick={() =>
+                      navigate(`/create-problem-solving/${lessonID}`, {
+                       
+                      })
+                    }
                   />
                 </Card>
               </Col>

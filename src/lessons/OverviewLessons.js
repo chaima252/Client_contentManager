@@ -3,6 +3,7 @@ import Sidebar from "../sidebar/Sidebar";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
+import { useNavigate } from "react-router-dom";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
@@ -67,12 +68,13 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
 }));
 function OverviewLessons() {
   const [lessons, setLessons] = useState([]);
+  const navigate=useNavigate() ;
 
   const getLessons = async () => {
     try {
       const data = await axios.get("http://localhost:5002/get_lessons");
       setLessons(data.data);
-      console.log(data.data);
+      console.log("Lessons : ",data.data);
     } catch (error) {
       console.log(error);
     }
@@ -207,7 +209,15 @@ function OverviewLessons() {
                         </StyledTableCell>
                         <StyledTableCell>{lesson.courseName}</StyledTableCell>
                         <StyledTableCell style={{ display: "flex" }}>
-                          <button className='show-lesson-button'>
+                          <button className='show-lesson-button'
+                           onClick={() =>
+                            navigate(`/exercises/${lesson.lessonID}`, {
+                              state: {
+                                lessonTitle: lesson.title,
+                              },
+                            })
+                          }
+                          >
                             See Exercises
                           </button>
                         </StyledTableCell>

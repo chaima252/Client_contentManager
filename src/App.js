@@ -6,6 +6,7 @@ import ManageUnits from './Units/manageUnits';
 import Course from './courses/Course';
 import AddCourse from './courses/AddCourse';
 import UnitsByCourse from './Units/unitsByCourse';
+import AddPBExercise from './exercises/addPSExercise';
 import AddMTExercise from './exercises/addMTExercise';
 import Exercises from './exercises/Exercises';
 
@@ -15,6 +16,8 @@ import AddLesson from './lessons/AddLesson'
 import Lessons from './lessons/Lessons';
 import ContentLesson from './lessons/ContentLesson';
 import OverviewLessons from './lessons/OverviewLessons';
+
+
 function App() {
   return (
     <>
@@ -29,11 +32,16 @@ function App() {
        
 
        <Route path="/addlesson" element={<AddLesson />} />
-       <Route path="/exercises" element={<Exercises />} />
+       {/*<Route path="/exercises" element={<Exercises />} /> */}
 
        <Route path="/lessonByUnits/:unitID" element={<Lessons />} />
        <Route path="/contentLesson/:lessonID" element={<ContentLesson />} />
        <Route path="/overviewlessons" element={<OverviewLessons />} />
+
+       <Route path="/create-problem-solving/:lessonID" element={<AddPBExercise/>} />
+
+       <Route path="/exercises/:lessonID" element={<Exercises/>}/>
+       <Route path="/testps/:lessonID" element={<AddPBExercise/>}/>
 
 
     </Routes>

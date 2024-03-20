@@ -1,0 +1,63 @@
+:where(.css-dev-only-do-not-override-1k979oh).ant-input:placeholder-shown {
+    /* text-overflow: ellipsis; */
+    margin-top: 20px;
+   
+
+}
+
+.content-step {
+  height: 600px;
+  text-align: center;
+  width: 80%;
+  color: #1f1246;
+  background-color: #f2effe;
+  margin-left: 120px;
+
+  border-radius: 5px;
+  border: 1px dashed;
+  /* margin-top:  16; */
+}
+
+.exercise-container {
+    margin-bottom: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+  select {
+    width: 190px;
+    height: 40px;
+    align-content: center;
+    justify-content: center;
+    /* margin-top: 70px */
+}
+
+.submit-button {
+    padding: 15px;
+    margin: 60px 850px;
+    width: 290px;
+    font-size: 15px;
+    background: #7659f1;
+    border-radius: 12px;
+    /* font-weight: 500; */
+    font-size: 18px;
+    margin-right: '250px';
+    outline: 0;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-family: monospace;
+  }
+
+  .solution {
+    font-family: monospace;
+    color: #7659f1;
+    font-size: 24px;
+  }
+
+  .text {
+    font-family: monospace;
+    color: #1f1246;
+    font-size: 16px;
+  }
