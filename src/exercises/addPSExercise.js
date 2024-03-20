@@ -1,6 +1,5 @@
 import React from 'react'
 import Sidebar from "../sidebar/Sidebar";
-import "./ProblemSolving.css"
 import { Input,Button } from 'antd';
 import Editor from '@monaco-editor/react';
 import axios from 'axios';
@@ -8,10 +7,10 @@ import { Select } from 'antd';
 import { useState,useRef } from 'react';
 import { CODE_SNIPPETS, LANGUAGE_VERSIONS } from "./constants";
 import { executeCode } from './api';
-import { Card, Space ,Steps} from 'antd';
+import { Card, Space ,Steps,message} from 'antd';
 import   {PlusCircleOutlined,ArrowLeftOutlined,ArrowRightOutlined}      from '@ant-design/icons';
-import { useParams } from 'react-router-dom';
-
+import { useParams,useNavigate } from 'react-router-dom';
+import "./addPSExercise.css"
 const languages = Object.entries(LANGUAGE_VERSIONS);
 
 const { TextArea } = Input;
@@ -19,6 +18,7 @@ const { Option } = Select;
  function AddPBExercise() {
 
   const editorRef = useRef();
+  const navigate=useNavigate()
   const [problem,setProblem]=useState('' );
   const [outPut,setOutPut]=useState(null);
   const [value, setValue] = useState("");
@@ -73,7 +73,8 @@ console.log("exercise problem solving : ",exercise);
         try {
           const response = await axios.post('http://localhost:5002/create_problemsolv', exercise); 
           console.log("Response from api : ",response.data) ;
-        
+          message.success('Processing complete!') 
+          navigate(`/exercises/${lessonID}`) ;
 
         } catch(error) {
           console.log('ERROR ',error) ;
@@ -87,8 +88,10 @@ console.log("exercise problem solving : ",exercise);
       const steps = [ 
         {
         title:'Problem',
-        content : (<div>
+        content : (<div className='step-problem'>
+          <br></br>
              <p className='text'> You must provide the problem for the exercise.</p>
+             <div style={{alignItems:'center',alignContent:'center'}}> 
                <Select
         style={{marginTop:'10px'}}
        
@@ -106,17 +109,19 @@ console.log("exercise problem solving : ",exercise);
 
   ) ) }
    </Select>
-
-
+<br></br>
+<br></br>
         <TextArea rows={4}
          placeholder="write your problem exercise here..."
          value={problem}
          onChange={handleTextChange}
           />
+          </div>
         </div> ) , 
         }, 
     {title:'Solution', 
-content: ( <div> 
+content: ( <div>
+  <br></br> 
       
        <p className='text'> You must provide the solution for the exercise in order to assist the student.</p>
 <br/>
@@ -131,7 +136,9 @@ content: ( <div>
             }}
       
             height="40vh"
-            theme="vs-dark"
+            width="550px"
+            theme="vs-night-blue"
+            
             
             language={language}
             defaultLanguage='javascript'
@@ -141,8 +148,8 @@ content: ( <div>
             onChange={(value) => setValue(value)}
           />
 </div>
-<div style={{width:'950px',height:'250px',marginLeft:'15px'}}> 
- <Button style={{width:'125px',color:"white",backgroundColor:"#1f1246"}}
+<div style={{width:'950px',height:'250px',marginLeft:'5px'}}> 
+ <Button style={{width:'125px',color:"white",backgroundColor:"#1f1246",marginRight:'310px'}}
  onClick={runCode}
  >
   Run 
@@ -150,9 +157,10 @@ content: ( <div>
  
           <Card
       style={{
-        width: '610px',
+        width: '435px',
         height:'250px',
-        marginTop:'15px'
+        marginTop:'15px',
+        marginLeft:'5px'
       }}
     > {outPut ? outPut: 'Click "Run Code" to see the output here'}
     </Card>
@@ -194,7 +202,7 @@ content: ( <div>
       <Steps current={current} items={items} 
      
       className="custom-steps" />
-      <div className='content-step'>
+      <div className='content-stepp'>
         {steps[current].content} 
     
         </div>

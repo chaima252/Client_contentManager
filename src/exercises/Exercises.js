@@ -51,11 +51,9 @@ const Exercises = () => {
   
 const getExerciseById = async(id)=> {
 
-  try {
-                                                            
+  try {                                                        
     const response = await axios.get(`http://localhost:5002/get_exercise/${id}`);
 
-    
     console.log("Response exercise by id ",response.data);
     setTypeExercise(response.data.type+" Exercise") ; 
     setQuestion(response.data.question) ;
@@ -73,6 +71,24 @@ const handleModalView = (id)=> {
   setModalViewOpen(true) ; 
   getExerciseById(id) ;
   console.log("options: ",options)
+}
+
+const deletedExerciseById = async (id) =>{
+
+  Modal.confirm({
+    title: "Delete Unit",
+    content: "Are you sure you want to delete this Exercise?",
+    onOk() {
+      axios.delete(`http://localhost:5002/delete_exercise/${id}`).then(() => {
+        window.location.reload(false);
+      });
+    },
+    okText: "Delete",
+    cancelText: "Cancel",
+    okButtonProps: {
+      style: { backgroundColor: "#C10000" },
+    },
+  });
 }
 
 
@@ -105,7 +121,14 @@ const handleModalView = (id)=> {
           </Card>
           </Col>
        
+       {recentExercises.length===0 && ( 
+         <h2 style={{ color: " #1f1246" ,marginLeft:'55px',marginTop:'70px'}}>
+         {" "}
+         No Exercises have been created for this lesson yet..
+       </h2>
+       )}
         { recentExercises.map((exercise)=> ( 
+          exercise.type==='Multiple Choice' || exercise.type === "Single Choice" && (
 <Col span={4}>
 <Card style={{height:"180px", marginLeft:'10px',
  background: 'linear-gradient(#f5f4f8, #f9f9fb) padding-box,linear-gradient(145deg, transparent 2vh, #7659f1, #35e9bc) border-box',
@@ -114,7 +137,7 @@ borderRadius:'20px'
 }}>
  
  <p style={{fontFamily:'monospace'}}> <span style={{fontWeight:'bold',fontFamily:'monospace', color:'#1f1246'}}>  Question : 
-  </span> {exercise.question.slice(0, 14)} <span style={{color:'grey',fontWeight:'bold',cursor:'pointer'}} 
+  </span> {exercise.question} <span style={{color:'grey',fontWeight:'bold',cursor:'pointer'}} 
   onClick={()=> {handleModalView(exercise._id)
     setExerciseId(exercise._id)
     }}
@@ -128,12 +151,14 @@ borderRadius:'20px'
  }}
 > View </Button>
   <Tooltip title="Delete" >
-  <Button  style={{marginLeft:'10px' , backgroundColor:'FF6868'}} shape="circle" icon={<DeleteOutlined/>} />
+  <Button  style={{marginLeft:'10px' , backgroundColor:'FF6868'}} shape="circle" 
+  icon={<DeleteOutlined/>} 
+  onClick={()=> deletedExerciseById(exercise._id)}/>
   </Tooltip>
   </div>
     </Card> 
   </Col>
-        )) }
+        ))) }
          
       
         
@@ -154,6 +179,8 @@ borderRadius:'20px'
           onCancel={() => setModalViewOpen(false)} 
         >
           <div style={{marginTop:'15px'}}>
+
+           
           
           <p> <span> Question : </span> {question} </p>
           <div >
@@ -163,9 +190,9 @@ borderRadius:'20px'
           {options.map((option, index) => (
     <div style={{ display: 'flex', alignItems: 'center' }} key={index}>
       
-      {typeExercise === "Multiple Choice Exercise" ? (
+      {typeExercise === "Multiple Choice" ? (
         <CheckBoxOutlineBlankIcon fontSize='small' />
-      ) : (
+      ) :  (
         <RadioButtonUncheckedIcon fontSize='small' />
       )}
       <p style={{ marginLeft: '5px',color: option.checked === true ? 'green' : 'inherit' ,  fontWeight: option.checked === true? 'bold' : 'normal' }}>{option.text}</p>
@@ -216,22 +243,54 @@ borderRadius:'20px'
                   />
                 </Card>
               </Col>
+              {recentExercises.length===0 && ( 
+         <h2 style={{ color: " #1f1246" , marginLeft:'55px',marginTop:'70px'}}>
+        
+         No Exercises have been created for this lesson yet..
+       </h2>
+       )}
+              { recentExercises.map((exercise)=> ( 
+          exercise.type==='Problem Solving' )  && (
 
-              <Col span={4}>
-                <Card
-                  style={{
-                    height: "180px",
-                    marginLeft: "10px",
+            <Col span={4}>
+            <Card
+              style={{
+                height: "180px",
+                marginLeft: "10px",
 
-                    background:
-                      "linear-gradient(#f5f4f8, #f9f9fb) padding-box,linear-gradient(145deg, transparent 2vh, #7659f1, #35e9bc) border-box",
-                    border: "5px solid transparent",
-                    borderRadius: "20px",
-                  }}
-                >
-                  <p>Content for the exercise</p>
-                </Card>
-              </Col>
+                background:
+                  "linear-gradient(#f5f4f8, #f9f9fb) padding-box,linear-gradient(145deg, transparent 2vh, #7659f1, #35e9bc) border-box",
+                border: "5px solid transparent",
+                borderRadius: "20px",
+              }}
+            >
+           <p style={{fontFamily:'monospace'}}> <span style={{fontWeight:'bold',fontFamily:'monospace', color:'#1f1246'}}>  Question : 
+  </span> {exercise.question} <span style={{color:'grey',fontWeight:'bold',cursor:'pointer'}} 
+ 
+  >...</span></p>
+          
+          
+          <div style={{display:"flex"}}>
+<Button  icon={<EyeOutlined />} 
+ className='button-view'
+ onClick={()=> {handleModalView(exercise._id)
+ setExerciseId(exercise._id)
+ }}
+> View </Button>
+  <Tooltip title="Delete" >
+  <Button  style={{marginLeft:'10px' , backgroundColor:'FF6868'}} shape="circle" 
+  icon={<DeleteOutlined/>} 
+  
+  onClick={()=> deletedExerciseById(exercise._id)}/>
+  </Tooltip>
+  </div>
+            </Card>
+          </Col>
+
+
+
+           ))}
+             
             </Row>
           </div>
         </div>
