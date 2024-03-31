@@ -39,7 +39,7 @@ function Quizzes() {
               }}
               startIcon={<Add />}
             >
-              Add Quiz
+              Add this Quiz
             </Button>
           </div>
         </div>
