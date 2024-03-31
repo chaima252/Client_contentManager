@@ -9,7 +9,7 @@ import UnitsByCourse from './Units/unitsByCourse';
 import AddPBExercise from './exercises/addPSExercise';
 import AddMTExercise from './exercises/addMTExercise';
 import Exercises from './exercises/Exercises';
-import Quizzes from './Quizzes/Quizzes';
+import Quizzes from './quizzes/Quizzes';
 
 
 import AddLesson from './lessons/AddLesson'
@@ -38,7 +38,7 @@ function App() {
        <Route path="/lessonByUnits/:unitID" element={<Lessons />} />
        <Route path="/contentLesson/:lessonID" element={<ContentLesson />} />
        <Route path="/overviewlessons" element={<OverviewLessons />} />
-       <Route path="/quizzes" element={Quizzes} />
+       <Route path="/quizzes" element={<Quizzes/>} />
        <Route path="/addQuiz" element={<AddQuiz />} />
 
        <Route path="/create-problem-solving/:lessonID" element={<AddPBExercise/>} />
