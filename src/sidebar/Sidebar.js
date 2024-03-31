@@ -61,6 +61,14 @@ function Sidebar() {
             <span>Exercises</span>
           </Link>
         </li>
+        <li  className={isActive('/quizzes') ? 'selected' : ''}>
+          <Link to={"/quizzes"}>
+            <i>
+              <QuizIcon style={{ width: "60px" }} />
+            </i>
+            <span>Quizzes</span>
+          </Link>
+        </li>
         <li>
           <Link to={"/"}>
             <i>

@@ -77,9 +77,7 @@ function AddCourse() {
               >
                 <h1>Add new course</h1>
                 <div className='form_group'>
-                  <label className='sub_title' for='title'>
-                    Title
-                  </label>
+               
                   <input
                     placeholder='Enter The course title'
                     className='form_style'
@@ -92,9 +90,7 @@ function AddCourse() {
                   </p>
                 </div>
                 <div className='form_group'>
-                  <label className='sub_title' for='description'>
-                    Description
-                  </label>
+              
                   <textarea
                     placeholder='Enter The course description'
                     className='form_style'
@@ -109,9 +105,7 @@ function AddCourse() {
                   </p>
                 </div>
                 <div className='form_group'>
-                  <label className='sub_title' for='category'>
-                    Category
-                  </label>
+               
                   <input
                     placeholder='Enter The course category'
                     className='form_style'

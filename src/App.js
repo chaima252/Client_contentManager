@@ -15,6 +15,8 @@ import AddLesson from './lessons/AddLesson'
 import Lessons from './lessons/Lessons';
 import ContentLesson from './lessons/ContentLesson';
 import OverviewLessons from './lessons/OverviewLessons';
+import Quizzes from './quizzes/Quizzes';
+import AddQuiz from './quizzes/AddQuiz';
 function App() {
   return (
     <>
@@ -34,6 +36,8 @@ function App() {
        <Route path="/lessonByUnits/:unitID" element={<Lessons />} />
        <Route path="/contentLesson/:lessonID" element={<ContentLesson />} />
        <Route path="/overviewlessons" element={<OverviewLessons />} />
+       <Route path="/quizzes" element={<Quizzes />} />
+       <Route path="/addQuiz" element={<AddQuiz />} />
 
 
     </Routes>

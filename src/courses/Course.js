@@ -133,7 +133,6 @@ function Course() {
 
   return (
     <div className='course'>
-      {/* //! dialog edit course */}
       <Dialog
         open={openEdit}
         onClose={closeEditDialog}
