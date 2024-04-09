@@ -17,6 +17,7 @@ import Lessons from './lessons/Lessons';
 import ContentLesson from './lessons/ContentLesson';
 import OverviewLessons from './lessons/OverviewLessons';
 import AddQuiz from './quizzes/AddQuiz';
+import Questions from './questions/Questions';
 
 
 function App() {
@@ -45,6 +46,9 @@ function App() {
 
        <Route path="/exercises/:lessonID" element={<Exercises/>}/>
        <Route path="/testps/:lessonID" element={<AddPBExercise/>}/>
+
+       <Route path="/questions/:quizId" element={<Questions />} />
+
 
 
     </Routes>

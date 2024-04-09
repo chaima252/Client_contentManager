@@ -45,21 +45,7 @@ function Quizzes() {
 
   const [quizzes, setQuizzes] = useState([]);
 
-  // const getQuizzes = async () => {
-  //   try {
-  //     const data = await axios.get(
-  //       'http://localhost:5002/getAllQuizzes'
-  //     );
-  //     console.log(data.data);
-  //     const courseID = data.data.idCourse;
-  //     const courseName = await axios.get(`http://localhost:5002/get_course/${courseID}`);
 
-  //     setCourseName(courseName);
-  //     setQuizzes(data.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const getQuizzes = async () => {
     try {
@@ -188,7 +174,13 @@ function Quizzes() {
 
                       <StyledTableCell>
                       <button className='show-lesson-button'
-                    
+                     onClick={() =>
+                      navigate(`/questions/${quiz._id}`, {
+                        state: {
+                          quizName: quiz.quizName
+                        },
+                      })
+                    }
                           > 
                             See Questions
                           </button>
