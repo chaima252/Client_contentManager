@@ -76,9 +76,9 @@
   color: black;
 }
 
-.dialog-content {
-  margin-left: 20px;
-}
+/* .dialog-content {
+  margin-left: px;
+} */
 
 .dialog-buttons {
   align-items: center;

@@ -11,6 +11,10 @@ import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import { Delete } from "@mui/icons-material";
+import { Modal } from "antd";
+import axios from "axios";
+
+
 import {
   Dialog,
   DialogTitle,
@@ -44,13 +48,26 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function Questions() {
   const { quizId } = useParams();
-  const location = useLocation();
-  const quizName = location.state.quizName;
+  const [quizTitle, setQuizTitle] = useState('');
+  // const location = useLocation();
+  // // const quizName = location.state.quizName;
+
+
+  const get_quizTitle = () =>{
+    axios.get(`http://localhost:5002/getQuiz/${quizId}`).then((res) => {
+      setQuizTitle(res.data.quizName);
+
+    })
+  }
+
   const [showAddModal, setAddShowModal] = useState(false);
+  // const [showUpdateModal, setUpdateShowModal] = useState(false);
 
   //! questions 
+  const [questionID, setQuestionID] = useState('');
   const [question, setQuestion] = useState([]);
   const [content, setContent] = useState('');
+  const [options, setOptions] = useState([]);
   const [correctOption, setCorrectOption] = useState('');
   const [optionA, setOptionA] = useState('');
   const [optionB, setOptionB] = useState('');
@@ -158,8 +175,109 @@ const fetchQuestion = async () => {
 
 useEffect(() => {
   fetchQuestion();
+  get_quizTitle();
 }, []);
 
+
+  //! function to delete a question
+  const delete_question = (questionID) => {
+    Modal.confirm({
+      title: "Delete Question",
+      content: "Are you sure you want to delete this Question?",
+      onOk() {
+        axios
+          .delete(`http://localhost:5002/deleteQuestion/${questionID}`)
+          .then(() => {
+            window.location.reload(false);
+          });
+      },
+      okText: "Delete",
+      cancelText: "Cancel",
+      okButtonProps: {
+        style: { backgroundColor: "#C10000" },
+      },
+    });
+  };
+
+
+    //! function to get one question
+    const get_one_question = (questionID) => {
+      axios
+        .get(`http://localhost:5002/getOneQuestion/${questionID}`)
+        .then((res) => {
+          const { content, options, correctOption } = res.data;
+
+          setContent(content);
+          setCorrectOption(correctOption);
+
+
+          setOptionA(options[0] || ''); 
+          setOptionB(options[1] || '');
+          setOptionC(options[2] || '');
+          setOptionD(options[3] || '');
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+        });
+    };
+
+  const [openEdit, setOpenEdit] = useState(false);
+  const handleEditDialog = (questionID) => {
+    setOpenEdit(true);
+    get_one_question(questionID);
+  };
+  const closeEditDialog = () => {
+    setOpenEdit(false);
+  };
+
+  
+
+  //! update question
+  const update_lquestion = () => {
+
+  const optionA = document.getElementById('optionA').value;
+  const optionB = document.getElementById('optionB').value;
+  const optionC = document.getElementById('optionC').value;
+  const optionD = document.getElementById('optionD').value;
+
+
+  if (!optionA || !optionB || !optionC || !optionD) {
+      alert('All options are required');
+      return;
+  }
+
+  const options = [optionA, optionB, optionC, optionD];
+  const correctOption = document.getElementById('correctOption').value;
+
+  
+  if (!options.includes(correctOption)) {
+      alert('The correct option must be one of the provided options');
+      return;
+  }
+
+    axios
+      .patch(`http://localhost:5002/updateQuestion/${questionID}`, {
+        content: content,
+        options: options,
+        correctOption: correctOption,
+
+
+       
+      })
+      .then((res) => {
+        console.log(res);
+        alert("updated!")
+        setTimeout(() => {
+          window.location.reload(false);
+        }, 1500);
+      })
+      .catch((err) => {
+        console.log(err.response.data.err);
+      });
+  };
+
+    
+    
   return (
     <div className='questions'>
       <Dialog
@@ -242,13 +360,104 @@ useEffect(() => {
           </form>
         </DialogContent>
       </Dialog>
+
+      {/* //! update question */}
+      <Dialog
+        open={openEdit}
+        onClose={closeEditDialog}
+        aria-labelledby='add-question-modal'
+     
+      >
+        <DialogTitle>Update A Question</DialogTitle>
+        <DialogContent dividers>
+          <form onSubmit={update_lquestion} className='form-q-container'>
+            <TextField
+            className="q-content"
+              id='content'
+              label='Question'
+              placeholder='Question'
+              required
+              rows={2}
+              value={content}
+              onChangeCapture={(e) => setContent(e.target.value)}
+              />
+            <div className='options-container'>
+              <div className='option-group'>
+                <TextField
+                  type='text'
+                  id='optionA'
+                  label='Option A'
+                  placeholder='Option A'
+                  value={optionA}
+                  required
+                  onChangeCapture={(e) => setOptionA(e.target.value)}
+                  />
+                <TextField
+                  type='text'
+                  id='optionB'
+                  label='Option B'
+                  placeholder='Option B'
+                  value={optionB}
+                  required
+                  onChangeCapture={(e) => setOptionB(e.target.value)}
+                  />
+              </div>
+              <div className='option-group'>
+                <TextField
+                  type='text'
+                  id='optionC'
+                  label='Option C'
+                  placeholder='Option C'
+                  value={optionC}
+                  required
+                  onChangeCapture={(e) => setOptionC(e.target.value)}
+
+                />
+                <TextField
+                  type='text'
+                  id='optionD'
+                  label='Option D'
+                  placeholder='Option D'
+                  value={optionD}
+                  required
+                  onChangeCapture={(e) => setOptionD(e.target.value)}
+
+                />
+              </div>
+              
+              <TextField
+              className="correct-option"
+                type='text'
+                id='correctOption'
+                label='Correct Option'
+                placeholder='Correct Option'
+                value={correctOption}
+                required
+                onChangeCapture={(e) => setCorrectOption(e.target.value)}
+                />
+              
+           <div className="button-add-question">
+              <Button className="add-question" type='submit' variant='contained'   style={{
+                backgroundColor: "#7659F1",
+                borderRadius: "10px",
+                color: "#e3e3e3",
+              }}>
+                Update
+              </Button>
+           </div>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+
       <div className='container'>
         <Sidebar />
         <div className='main'>
           <h1
             style={{ textAlign: "Left", fontSize: "40px", marginTop: "35px" }}
           >
-            Questions of {quizName}
+            Questions of {quizTitle}
           </h1>
 
           <div className='button-add-container'>
@@ -318,13 +527,17 @@ useEffect(() => {
                         <IconButton
                           aria-label='delete'
                           color='error'
+                          onClick={()=> delete_question(item._id)}
                         >
                           <Delete />
                         </IconButton>
                         <IconButton
                           aria-label='edit'
                           style={{ color: "#35e9bc" }}
-                          
+                          onClick={() => {
+                            setQuestionID(item._id);
+                            handleEditDialog(item._id);
+                          }}
                         >
                           <EditIcon />
                         </IconButton>
