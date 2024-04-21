@@ -42,9 +42,10 @@ function App() {
        <Route path="/addQuiz" element={<AddQuiz />} />
 
        <Route path="/create-problem-solving/:lessonID" element={<AddPBExercise/>} />
-
        <Route path="/exercises/:lessonID" element={<Exercises/>}/>
        <Route path="/testps/:lessonID" element={<AddPBExercise/>}/>
+
+       <Route path="/create-exercise/:lessonID" element={<AddMTExercise/>} />
 
 
     </Routes>

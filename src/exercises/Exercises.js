@@ -96,7 +96,7 @@ const deletedExerciseById = async (id) =>{
     <div className='container'>
       <Sidebar />
       <div className='main'>
-        <h1 style={{ color: "#1f1246" }}> OverView of Exercises</h1>
+        <h1 style={{ color: "#1f1246" }}> Exercises</h1>
 
        <div style={{marginBottom:'50px'}}>
    <Select className='select' key={"1"} defaultValue="Select Course" style={{marginLeft:'950px',width:'200px'}}>
@@ -116,7 +116,7 @@ const deletedExerciseById = async (id) =>{
           style = {{justifyContent:'center' , alignItems:'center' ,
             fontSize: '60px',alignContent:'center',
         marginLeft:'10px',marginTop:'12px', color:'#35e9bc'}}
-         onClick={()=> navigate('/createExercise')}
+         onClick={()=> navigate(`/create-exercise/${lessonID}`)}
          />
           </Card>
           </Col>

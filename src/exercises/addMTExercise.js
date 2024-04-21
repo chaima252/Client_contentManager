@@ -9,7 +9,7 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import   {PlusCircleOutlined,ArrowLeftOutlined,ArrowRightOutlined}      from '@ant-design/icons';
 import { DeleteOutlined } from '@ant-design/icons';
 
-import { useNavigate, useNavigation } from 'react-router-dom';
+import { useNavigate, useNavigation, useParams} from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -19,6 +19,7 @@ const { Option } = Select;
 function AddMTExercise() {
     const { token } = theme.useToken();
     const navigate=useNavigate();
+    const {lessonID} = useParams();
 const [current, setCurrent] = useState(0);
 const [question,setQuestion] = useState('');
 const [response,setResponse] = useState(''); 
@@ -152,7 +153,7 @@ if (Object.keys(newErrors).length === 0) {
   console.log("Response",response) ;
 
   const exercise = {
-    idLesson : lessonName ,
+    idLesson : lessonID ,
     type: selectedTypeValue,
     question:question,
     options:options,
@@ -161,72 +162,13 @@ if (Object.keys(newErrors).length === 0) {
 
   createExercise(exercise) ; 
   message.success('Processing complete!') 
-  navigate('/exercises') ;
+  navigate(`/exercises/${lessonID}`) ;
 }
  
 }
 
 const steps = [
-    {
-      title: 'Course',
-      content: (
-        <div>
-            <p > Please Select the course name</p>
-        <Select className='select' key={"1"}
-         value={courseName} 
-        onChange={(e)=> setCourseName(e)}
-        style={{marginBottom:'130px'}}>
-         
-         {dataCourses.map((course)=>(
- 
-          <Option value={course._id} >{course.title}</Option>
-         ) )}
-        </Select>
-        </div>
-        
-      
-      ),
-    },
-    {
-      title: 'Unit',
-      content: (
-       <div>
-          <p > Please Select the Unit name</p>
-        <Select className='select' key={"2"} 
-         value={unitName} 
-         onChange={(e)=> setUnitName(e)}
-         style={{marginBottom:'130px'}}>
-          {dataUnits.map((unit)=> (
-            <Option value={unit._id}>{unit.title}</Option>
-          ))}
-          
-         
-        
-        </Select>
-        </div>
-        
-      ),
-      
-    },
-    {
-      title: 'Lesson',
-      content: (
-        <div>
-              <p > Please Select the lesson name</p>
-         <Select className='select' key={"3"}
-         value={lessonName} 
-         onChange={(e)=> setLessonName(e)} style={{marginBottom:'130px'}}>
-          {dataLessons.map((lesson)=> (
-  <Option value={lesson._id}>{lesson.title}</Option>
-          ))}
-         
-         
-         
-         </Select>
-         </div>
-         
-       ),
-    },
+   
     {
         title: 'Build',
         content: (

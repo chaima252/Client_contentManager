@@ -110,6 +110,20 @@ function Lessons() {
                         >
                           Show Content
                         </button>
+                        <button
+
+                        style={{marginLeft:'15px'}}
+                          className='show-lesson-button'
+                          onClick={() =>
+                            navigate(`/exercises/${lesson._id}`, {
+                              state: {
+                                lessonTitle: lesson.title,
+                              },
+                            })
+                          }
+                        >
+                           Exercises
+                        </button>
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
