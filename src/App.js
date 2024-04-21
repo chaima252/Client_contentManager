@@ -17,6 +17,8 @@ import Lessons from './lessons/Lessons';
 import ContentLesson from './lessons/ContentLesson';
 import OverviewLessons from './lessons/OverviewLessons';
 import AddQuiz from './quizzes/AddQuiz';
+import Questions from './questions/Questions';
+import UpdateLesson from './lessons/UpdateLesson';
 
 
 function App() {
@@ -44,8 +46,6 @@ function App() {
        <Route path="/create-problem-solving/:lessonID" element={<AddPBExercise/>} />
        <Route path="/exercises/:lessonID" element={<Exercises/>}/>
        <Route path="/testps/:lessonID" element={<AddPBExercise/>}/>
-
-       <Route path="/create-exercise/:lessonID" element={<AddMTExercise/>} />
 
 
     </Routes>

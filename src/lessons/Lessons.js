@@ -9,6 +9,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import { Delete } from "@mui/icons-material";
+import { Modal } from "antd";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -54,6 +59,26 @@ function Lessons() {
     getLessons();
   }, [unitID]);
 
+
+    //! function to delete a lesson
+    const delete_lesson = (lessonID) => {
+      Modal.confirm({
+        title: "Delete Lesson",
+        content: "Are you sure you want to delete this Lesson?",
+        onOk() {
+          axios
+            .delete(`http://localhost:5002/delete_lesson/${lessonID}`)
+            .then(() => {
+              window.location.reload(false);
+            });
+        },
+        okText: "Delete",
+        cancelText: "Cancel",
+        okButtonProps: {
+          style: { backgroundColor: "#C10000" },
+        },
+      });
+    };
   return (
     <div className='lessons'>
       <div className='container'>
@@ -85,19 +110,20 @@ function Lessons() {
               <Table sx={{ minWidth: 700 }} aria-label='customized table'>
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell align='left'>Lesson Title</StyledTableCell>
-                    <StyledTableCell align='left'>Actions </StyledTableCell>
+                    <StyledTableCell align='center'>Lesson Title</StyledTableCell>
+                    <StyledTableCell align="center">Content </StyledTableCell>
+                    <StyledTableCell align='center'>Actions </StyledTableCell>
                   </TableRow>
                 </TableHead>
 
                 <TableBody>
                   {lessons.map((lesson, i) => (
                     <StyledTableRow key={i} content={lesson}>
-                      <StyledTableCell component='th' scope='row'>
+                      <StyledTableCell align="center" component='th' scope='row' style={{fontWeight:"bold"}}>
                         {lesson.title}
                       </StyledTableCell>
 
-                      <StyledTableCell>
+                      <StyledTableCell align="center">
                         <button
                           className='show-lesson-button'
                           onClick={() =>
@@ -124,6 +150,30 @@ function Lessons() {
                         >
                            Exercises
                         </button>
+                      </StyledTableCell>
+
+                      <StyledTableCell  style={{ display: "flex", alignItems:"center", justifyContent:"center" }}>
+                        <IconButton
+                          aria-label='delete'
+                          color='error'
+                          onClick={() => delete_lesson(lesson._id)}
+                        >
+                          <Delete />
+                        </IconButton>
+                        <IconButton
+                          aria-label='edit'
+                          style={{ color: "#35e9bc" }}
+                          onClick={() =>
+                            navigate(`/updateLesson/${lesson._id}`, {
+                              state: {
+                                lessonID: lesson._id,
+                              },
+                            })
+                          }
+                          
+                        >
+                          <EditIcon />
+                        </IconButton>
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}

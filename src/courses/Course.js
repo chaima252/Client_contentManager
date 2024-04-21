@@ -121,7 +121,7 @@ function Course() {
       });
   };
 
-  //! opening and closing edit interview dialog
+  //! opening and closing edit course dialog
   const [openEdit, setOpenEdit] = useState(false);
   const handleEditDialog = (courseID) => {
     setOpenEdit(true);
@@ -133,6 +133,7 @@ function Course() {
 
   return (
     <div className='course'>
+      {/* //! DIALOG UPDATE */ }
       <Dialog
         open={openEdit}
         onClose={closeEditDialog}
@@ -143,9 +144,9 @@ function Course() {
         <DialogContent className='dialog-content'>
           <form onSubmit={update_course} className='form-edit'>
             <div className='form_group'>
-              <label className='sub_title_edit' for='title'>
+              <p className='sub_title_edit' for='title'>
                 Title
-              </label>
+              </p>
               <input
                 placeholder='Enter The course title'
                 className='form_style'
@@ -156,9 +157,9 @@ function Course() {
               />
             </div>
             <div className='form_group'>
-              <label className='sub_title_edit' for='description'>
+              <p className='sub_title_edit' for='description'>
                 Description
-              </label>
+              </p>
               <textarea
                 placeholder='Enter The course description'
                 className='form_style'
@@ -169,9 +170,9 @@ function Course() {
               />
             </div>
             <div className='form_group'>
-              <label className='sub_title_edit' for='category'>
+              <p className='sub_title_edit' for='category'>
                 Category
-              </label>
+              </p>
               <input
                 placeholder='Enter The course category'
                 className='form_style'

@@ -14,6 +14,12 @@ import axios from "axios";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import { Delete } from "@mui/icons-material";
+import { Modal } from "antd";
+
+//dialogue mui
+import { Dialog } from "@mui/material";
+import { DialogTitle } from "@mui/material";
+import { DialogContent } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -44,22 +50,13 @@ function Quizzes() {
   };
 
   const [quizzes, setQuizzes] = useState([]);
+  const [quizID, setQuizID] = useState();
+  const [quizName, setQuizName] = useState("");
+  const [quizDuration, setQuizDuration] = useState("");
+  const [totalMarks, setTotalMarks] = useState("");
+  const [passingMarks, setPassingMarks] = useState("");
 
-  // const getQuizzes = async () => {
-  //   try {
-  //     const data = await axios.get(
-  //       'http://localhost:5002/getAllQuizzes'
-  //     );
-  //     console.log(data.data);
-  //     const courseID = data.data.idCourse;
-  //     const courseName = await axios.get(`http://localhost:5002/get_course/${courseID}`);
 
-  //     setCourseName(courseName);
-  //     setQuizzes(data.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const getQuizzes = async () => {
     try {
@@ -90,9 +87,147 @@ function Quizzes() {
     getQuizzes();
   }, []);
 
+  //! function to delete a quiz
+  const delete_quiz = (quizID) => {
+    Modal.confirm({
+      title: "Delete Quiz",
+      content: "Are you sure you want to delete this Quiz?",
+      onOk() {
+        axios
+          .delete(`http://localhost:5002/delete_quiz/${quizID}`)
+          .then(() => {
+            window.location.reload(false);
+          });
+      },
+      okText: "Delete",
+      cancelText: "Cancel",
+      okButtonProps: {
+        style: { backgroundColor: "#C10000" },
+      },
+    });
+  };
+
+
+  //! function to get one quiz
+  const get_one_quiz = (quizID) => {
+    axios
+      .get(`http://localhost:5002/getQuiz/${quizID}`)
+      .then((res) => {
+        setQuizName(res.data.quizName);
+        setQuizDuration(res.data.quizDuration);
+        setTotalMarks(res.data.totalMarks);
+        setPassingMarks(res.data.passingMarks);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  };
+
+    // ! function to update a quiz
+    const update_quiz = () => {
+      axios
+        .patch(`http://localhost:5002/update_quiz/${quizID}`, {
+          quizName: quizName,
+          quizDuration: quizDuration,
+          totalMarks: totalMarks,
+          passingMarks:passingMarks,
+        })
+        .then((res) => {
+          console.log(res);
+          // notify_edit();
+          setTimeout(() => {
+            window.location.reload(false);
+          }, 1500);
+        })
+        .catch((err) => {
+          console.log(err.response.data.err);
+        });
+    };
+
+      //! opening and closing edit interview dialog
+  const [openEdit, setOpenEdit] = useState(false);
+  const handleEditDialog = (quizID) => {
+    setOpenEdit(true);
+    get_one_quiz(quizID);
+  };
+  const closeEditDialog = () => {
+    setOpenEdit(false);
+  };
+
   return (
 
     <div className='quizzes'>
+        {/* //! DIALOG UPDATE */ }
+        <Dialog
+        open={openEdit}
+        onClose={closeEditDialog}
+        className='dialog'
+        PaperProps={{ sx: { width: "30%", height: "62%" } }}
+      >
+        <DialogTitle className='dialog-title'>Edit quiz details</DialogTitle>
+        <DialogContent className='dialog-content'>
+          <form onSubmit={update_quiz} className='form-edit'>
+            <div className='form_group'>
+              <p className='sub_title_edit' for='title'>
+                Quiz Name
+              </p>
+              <input
+                placeholder='Enter The quiz name'
+                className='form_style'
+                type='text'
+                name='quizName'
+                value={quizName}
+                onChangeCapture={(e) => setQuizName(e.target.value)}
+              />
+            </div>
+            <div className='form_group'>
+              <p className='sub_title_edit' for='description'>
+                Duration
+              </p>
+              <textarea
+                placeholder='Enter The Quiz Duration'
+                className='form_style'
+                type='text'
+                name='quizDuration'
+                value={quizDuration}
+                onChangeCapture={(e) => setQuizDuration(e.target.value)}
+              />
+            </div>
+            <div className='form_group'>
+              <p className='sub_title_edit' for='category'>
+                Total Marks
+              </p>
+              <input
+                placeholder='Enter The course category'
+                className='form_style'
+                name='totalMarks'
+                type='text'
+                value={totalMarks}
+                onChangeCapture={(e) => setTotalMarks(e.target.value)}
+              />
+            </div>
+            <div className='form_group'>
+              <p className='sub_title_edit' for='category'>
+                Passing Marks
+              </p>
+              <input
+                placeholder='Enter The course category'
+                className='form_style'
+                name='passingMarks'
+                type='text'
+                value={passingMarks}
+                onChangeCapture={(e) => setPassingMarks(e.target.value)}
+              />
+            </div>
+            <div className='dialog-buttons'>
+              <button onClick={closeEditDialog} className='dialog-cancel'>
+                Cancel
+              </button>
+              <button className='dialog-save'>Update Course</button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
       <div className='container'>
         <Sidebar />
         <div className='main'>
@@ -174,12 +309,17 @@ function Quizzes() {
                         <IconButton
                           aria-label='delete'
                           color='error'
+                          onClick={() => delete_quiz(quiz._id)}
                         >
                           <Delete />
                         </IconButton>
                         <IconButton
                           aria-label='edit'
                           style={{ color: "#35e9bc" }}
+                          onClick={() => {
+                            setQuizID(quiz._id);
+                            handleEditDialog(quiz._id);
+                          }}
                           
                         >
                           <EditIcon />
@@ -188,7 +328,13 @@ function Quizzes() {
 
                       <StyledTableCell>
                       <button className='show-lesson-button'
-                    
+                     onClick={() =>
+                      navigate(`/questions/${quiz._id}`, {
+                        state: {
+                          quizName: quiz.quizName
+                        },
+                      })
+                    }
                           > 
                             See Questions
                           </button>
