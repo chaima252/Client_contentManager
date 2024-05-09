@@ -11,6 +11,7 @@ import { Card, Space ,Steps,message} from 'antd';
 import   {PlusCircleOutlined,ArrowLeftOutlined,ArrowRightOutlined}      from '@ant-design/icons';
 import { useParams,useNavigate } from 'react-router-dom';
 import "./addPSExercise.css"
+import { Code } from '@mui/icons-material';
 const languages = Object.entries(LANGUAGE_VERSIONS);
 
 const { TextArea } = Input;
@@ -47,7 +48,9 @@ const { Option } = Select;
       };
 
       const runCode = async ()=> {
+        console.log(" code ",value) ; 
         const sourceCode= value ; 
+        console.log("source code" , sourceCode)
         if (!sourceCode) return ; 
          try {
 const {run:result} = await executeCode(language,sourceCode)
@@ -55,7 +58,10 @@ setOutPut(result.output) ;
          } catch(error) {
           console.log('ERROR ',error) ;
          }
-      }
+    
+    
+    
+        }
       const handleTextChange = (event) => {
        setProblem(event.target.value);
       };

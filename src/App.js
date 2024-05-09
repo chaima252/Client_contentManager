@@ -60,12 +60,13 @@ function App() {
           path='/create-problem-solving/:lessonID'
           element={<AddPBExercise />}
         />
+        <Route
+          path='/create-exercise/:lessonID'
+          element={<AddMTExercise />}
+        />
 
         <Route path='/exercises/:lessonID' element={<Exercises />} />
         <Route path='/testps/:lessonID' element={<AddPBExercise />} />
-
-
-        
 
         <Route path='/questions/:quizId' element={<Questions />} />
         <Route path='/updateLesson/:lessonID' element={<UpdateLesson />} />

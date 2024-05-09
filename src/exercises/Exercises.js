@@ -99,11 +99,7 @@ const deletedExerciseById = async (id) =>{
         <h1 style={{ color: "#1f1246" }}> Exercises</h1>
 
        <div style={{marginBottom:'50px'}}>
-   <Select className='select' key={"1"} defaultValue="Select Course" style={{marginLeft:'950px',width:'200px'}}>
-          <Option value="Course1">Java Basics</Option>
-          <Option value="Course2">HTML Basics</Option>
-          <Option value="Course3">Python Basics</Option>
-        </Select>
+ 
        <div>
         <h2  style={{ color:'#7659f1' }}> Multiple Choice Exercise</h2>
       <Row>
@@ -128,7 +124,7 @@ const deletedExerciseById = async (id) =>{
        </h2>
        )}
         { recentExercises.map((exercise)=> ( 
-          exercise.type==='Multiple Choice' || exercise.type === "Single Choice" && (
+          ( exercise.type==='Multiple Choice' || exercise.type === "Single Choice" ) && (
 <Col span={4}>
 <Card style={{height:"180px", marginLeft:'10px',
  background: 'linear-gradient(#f5f4f8, #f9f9fb) padding-box,linear-gradient(145deg, transparent 2vh, #7659f1, #35e9bc) border-box',
