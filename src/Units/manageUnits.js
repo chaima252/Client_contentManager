@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../sidebar/Sidebar";
 import { Button } from "@mui/material";
@@ -20,7 +19,6 @@ import axios from "axios";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
-
 import "./style.css";
 //pagination
 import Pagination from "@mui/material/Pagination";
@@ -186,9 +184,9 @@ function ManageUnits() {
   };
 
   return (
-    <div className='container'>
+    <div className="container">
       <Sidebar />
-      <div className='main'>
+      <div className="main">
         <h1
           style={{
             textAlign: "Left",
@@ -206,11 +204,6 @@ function ManageUnits() {
             alignContent: "center",
           }}
         >
-          {/*  <img src="/assets/unitsImage.png" style={{width:"20%"}}>
-       </img>
-
-  */}
-
           <p style={{ color: "#1f1246" }}>
             Welcome Content Manger 👋. With the{" "}
             <span
@@ -229,15 +222,14 @@ function ManageUnits() {
         </div>
 
         <div style={{ marginTop: "30px", marginRight: "60px" }}>
-
-          <div className='filter-buttons'>
+          <div className="filter-buttons">
             <CustomTextField
-              label='Search Unit Name'
-              variant='outlined'
+              label="Search Unit Name"
+              variant="outlined"
               InputProps={{
                 endAdornment: (
                   <CustomIconButton>
-                    <SearchIcon color='inherit' />
+                    <SearchIcon color="inherit" />
                   </CustomIconButton>
                 ),
               }}
@@ -246,12 +238,12 @@ function ManageUnits() {
             />
 
             <CustomTextField
-              label='Filter by Course'
-              variant='outlined'
+              label="Filter by Course"
+              variant="outlined"
               InputProps={{
                 endAdornment: (
                   <CustomIconButton>
-                    <FilterListIcon color='inherit' />
+                    <FilterListIcon color="inherit" />
                   </CustomIconButton>
                 ),
               }}
@@ -271,7 +263,7 @@ function ManageUnits() {
               marginRight: "80px",
             }}
           >
-            <Table sx={{ minWidth: 700 }} aria-label='customized table'>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
               <TableHead>
                 <TableRow>
                   <StyledTableCell>Unit Name</StyledTableCell>
@@ -281,18 +273,23 @@ function ManageUnits() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* //! pagination // */}
-                {(rowsperpage > 0
+                {(dataUnits.length > 0
                   ? dataUnits
-                      .filter((unit) =>
-                        unit.unitTitle
-                          .toLowerCase()
-                          .includes(filterUnitName.toLowerCase())
+                      .filter(
+                        (unit) =>
+                          unit.unitTitle &&
+                          typeof unit.unitTitle === "string" &&
+                          unit.unitTitle
+                            .toLowerCase()
+                            .includes(filterUnitName.toLowerCase())
                       )
-                      .filter((unit) =>
-                        unit.courseTitle
-                          .toLowerCase()
-                          .includes(filterCourseName.toLowerCase())
+                      .filter(
+                        (unit) =>
+                          unit.courseTitle &&
+                          typeof unit.courseTitle === "string" &&
+                          unit.courseTitle
+                            .toLowerCase()
+                            .includes(filterCourseName.toLowerCase())
                       )
                       .slice((page - 1) * rowsperpage, page * rowsperpage)
                   : dataUnits
@@ -308,14 +305,14 @@ function ManageUnits() {
                       <StyledTableCell>{unit.nbLessons}</StyledTableCell>
                       <StyledTableCell style={{ display: "flex" }}>
                         <IconButton
-                          aria-label='delete'
-                          color='error'
+                          aria-label="delete"
+                          color="error"
                           onClick={() => deleteUnit(unit.idUnit)}
                         >
                           <Delete />
                         </IconButton>
                         <IconButton
-                          aria-label='edit'
+                          aria-label="edit"
                           style={{ color: "#35e9bc" }}
                           onClick={() => setModalOpen(true)}
                         >
@@ -324,8 +321,8 @@ function ManageUnits() {
                       </StyledTableCell>
 
                       <Modal
-                        title='Update Unit'
-                        titleColor='#1f1246'
+                        title="Update Unit"
+                        titleColor="#1f1246"
                         centered
                         okButtonProps={{
                           style: {
@@ -339,10 +336,10 @@ function ManageUnits() {
                       >
                         <div style={{ marginTop: "15px" }}>
                           <input
-                            id='unitName'
-                            className='input'
-                            type='text'
-                            placeholder='Unit name '
+                            id="unitName"
+                            className="input"
+                            type="text"
+                            placeholder="Unit name "
                             defaultValue={unit.unitTitle}
                             onChange={handleUnitUpdatedName}
                             style={{ height: "40px" }}
@@ -350,16 +347,15 @@ function ManageUnits() {
                           <br />
                           <br />
                           <Select
-                            id='courseName'
+                            id="courseName"
                             style={{ height: "40px" }}
                             defaultValue={unit.courseTitle}
                             onChange={handleCourseUpdated}
-                            className='select'
+                            className="select"
                           >
                             {dataCourses.map((course) => (
-                              <Option value={course._id}>
-                                {" "}
-                                {course.title}{" "}
+                              <Option key={course._id} value={course._id}>
+                                {course.title}
                               </Option>
                             ))}
                           </Select>
@@ -375,13 +371,12 @@ function ManageUnits() {
                 )}
               </TableBody>
             </Table>
-
             <br />
             <Pagination
-              className='pagination'
-              color='primary'
-              variant='outlined'
-              shape='rounded'
+              className="pagination"
+              color="primary"
+              variant="outlined"
+              shape="rounded"
               count={Math.ceil(dataUnits.length / rowsperpage)}
               page={page}
               onChange={handleChangePage}
